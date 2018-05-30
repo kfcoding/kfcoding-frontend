@@ -1,0 +1,30 @@
+{
+  "name": "kfcoding-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ali-oss": "^5.2.0",
+    "antd": "^3.5.4",
+    "babel-engine-plugin": "^0.2.1",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-import": "^1.7.0",
+    "kf-slate-editor": "^1.0.9",
+    "react": "^16.4.0",
+    "react-app-rewired": "^1.5.2",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
+    "slate": "^0.33.6",
+    "slate-react": "^0.12.6"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
