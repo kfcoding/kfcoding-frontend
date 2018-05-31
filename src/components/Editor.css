@@ -34,3 +34,11 @@
 :global(.ant-tree-node-selected) {
     background-color: #e6f7ff !important;
 }
+.editor > div {
+    margin-top: 0 !important;
+}
+
+.ant-tabs-card .anticon {
+    color: #fff;
+    font-weight: bold;
+}

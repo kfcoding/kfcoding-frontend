@@ -8,7 +8,11 @@
     "babel-engine-plugin": "^0.2.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-import": "^1.7.0",
-    "kf-slate-editor": "^1.0.9",
+    "chai": "^4.1.2",
+    "express-ws": "^3.0.0",
+    "hterm": "^2.0.2",
+    "kf-slate-editor": "^1.1.1",
+    "node-pty": "^0.7.4",
     "react": "^16.4.0",
     "react-app-rewired": "^1.5.2",
     "react-dom": "^16.4.0",
@@ -19,7 +23,10 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "slate": "^0.33.6",
-    "slate-react": "^0.12.6"
+    "slate-react": "^0.12.6",
+    "sockjs": "^0.3.19",
+    "sockjs-client": "^1.1.5",
+    "xterm": "^3.4.1"
   },
   "scripts": {
     "start": "react-app-rewired start",

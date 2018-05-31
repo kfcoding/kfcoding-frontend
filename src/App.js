@@ -31,21 +31,15 @@ class App extends Component {
     const onChange = ({value}) => this.setState({value});
 
     return (
-      <Layout style={{height: '100%'}}>
-        <MyHeader/>
-        {/*<Router>*/}
-        <Content>
-          <div style={{minHeight: '100%', height: '100%'}}>
-            <Route exact path='/signin' component={Signin}/>
-            <Route exact path='/editor/:kongfu_id' component={props => <KongfuEditor {...props}/>}/>
-            <Route path='/reader/:kongfu_id' component={props => <Reader {...props}/>}/>
-            <Route path='/auth/callback' component={Callback}/>
-            <Route path='/library' component={Library}/>
-          </div>
-        </Content>
-        {/*</Router>*/}
-        <MyFooter/>
-      </Layout>
+      <div style={{height: '100%'}}>
+
+        <Route exact path='/signin' component={Signin}/>
+        <Route exact path='/editor/:kongfu_id' component={props => <KongfuEditor {...props}/>}/>
+        <Route path='/reader/:kongfu_id' component={props => <Reader {...props}/>}/>
+        <Route path='/auth/callback' component={Callback}/>
+        <Route path='/library' component={Library}/>
+
+      </div>
     );
   }
 }

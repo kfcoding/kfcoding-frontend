@@ -1,12 +1,15 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Icon } from 'antd';
+import { Layout, Menu, Dropdown, Icon, Row, Col, Tabs } from 'antd';
 import request from "../utils/request";
-import { getOssToken } from "../services/kongfu";
+import { getOssToken, getKongfu, createTerminal } from "../services/kongfu";
 import CannerEditor from 'kf-slate-editor';
 import { Value } from 'slate';
 import styles from './Editor.css';
+import MyHeader from './Header';
+import Term from './Term';
 
 const {Header, Content, Footer, Sider} = Layout;
+const TabPane = Tabs.TabPane;
 
 const Alioss = require('ali-oss');
 
@@ -42,6 +45,12 @@ class KongfuEditor extends React.Component {
       meta: null,
       dirty: false,
       editTitlePage: null,
+      kongfu: {
+        title: ''
+      },
+      activeKey: '1',
+      panes: [],
+      terminalIdx: 1,
     };
 
     this.saveTimer();
@@ -50,7 +59,6 @@ class KongfuEditor extends React.Component {
   componentWillMount() {
     let kongfu_id = this.state.kongfu_id;
     getOssToken(kongfu_id).then(res => {
-      console.log(res)
       var client = new Alioss.Wrapper({
         region: 'oss-cn-hangzhou',
         //endpoint: 'oss.book.kfcoding.com',
@@ -80,22 +88,29 @@ class KongfuEditor extends React.Component {
         }
       })
     })
+    getKongfu(this.state.kongfu_id).then(res => {
+      this.setState({kongfu: res.data.result.kongfu})
+    })
   }
 
   saveTimer() {
     setInterval(() => {
       if (this.state.dirty) {
-        let page = this.state.currentPage;
-
-        let filename = this.state.kongfu_id + '/' + page.file;
-        let pushdata = this.state.currentValue.toJSON();
-
-        this.state.ossclient.put(filename, new Alioss.Buffer(JSON.stringify(pushdata))).then(() => {
-          this.state.dirty = false;
-        })
+        this._saveCurrentPage();
       }
     }, 5000)
 
+  }
+
+  _saveCurrentPage() {
+    let page = this.state.currentPage;
+
+    let filename = this.state.kongfu_id + '/' + page.file;
+    let pushdata = this.state.currentValue.toJSON();
+
+    this.state.ossclient.put(filename, new Alioss.Buffer(JSON.stringify(pushdata))).then(() => {
+      this.state.dirty = false;
+    })
   }
 
   addPage = ({parent}) => {
@@ -130,7 +145,17 @@ class KongfuEditor extends React.Component {
   }
 
   openPage = (page) => {
+    if (this.state.currentPage == page) {
+      return;
+    }
+    if (this.state.dirty) {
+      this._saveCurrentPage();
+      this.state.dirty = false;
+    }
     request(this.state.ossclient.signatureUrl(this.state.kongfu_id + '/' + page.file)).then(res => {
+      if (res.err) {
+        return;
+      }
       this.state.currentPage = page;
       this.setState({currentValue: Value.fromJSON(res.data)});
     })
@@ -164,6 +189,21 @@ class KongfuEditor extends React.Component {
     this.forceUpdate()
   }
 
+  _deletePage(page) {
+    if (page.pages) {
+      page.pages.forEach(p => {
+        this._deletePage(p);
+      })
+    }
+    this.state.ossclient.delete(this.state.kongfu_id + '/' + page.file);
+    let parent = this._findParent(this.state.meta, page);
+    for (var i in parent.pages) {
+      if (page == parent.pages[i]) {
+        parent.pages.splice(i, 1);
+      }
+    }
+  }
+
   getPageList = (page) => {
     if (!page.pages) {
       page.pages = [];
@@ -184,20 +224,14 @@ class KongfuEditor extends React.Component {
       style.borderRight = '4px solid #1890ff';
     }
 
-    let onMenuClick = ({key}) => {
+    let onDropClick = ({key}) => {
       if (key == 'remove') {
-        let parent = this._findParent(this.state.meta, page);
-        for (var i in parent.pages) {
-          if (parent.pages[i] == page) {
-            parent.pages.splice(i, 1);
-            this.state.ossclient.delete(this.state.kongfu_id + '/' + page.file);
+        this._deletePage(page);
 
-            this.state.ossclient.put(this.state.kongfu_id + '/meta.json', new Alioss.Buffer(JSON.stringify(this.state.meta))).then(() => {
-              this.setState({currentPage: null})
-            });
-          }
-        }
-      } else if (key == 'rename') {console.log(this._findParent(this.state.meta, page))
+        this.state.ossclient.put(this.state.kongfu_id + '/meta.json', new Alioss.Buffer(JSON.stringify(this.state.meta))).then(() => {
+          this.setState({currentPage: null})
+        });
+      } else if (key == 'rename') {
         this.setState({editTitlePage: page})
       } else if (key == 'add') {
         this.addPage({parent: page});
@@ -206,7 +240,7 @@ class KongfuEditor extends React.Component {
 
 
     let menu = (
-      <Menu onClick={onMenuClick}>
+      <Menu onClick={onDropClick}>
         <Menu.Item key="rename">
           <a style={{fontSize: '12px'}}><Icon type="edit" style={{marginRight: '10px'}}/> 重命名</a>
         </Menu.Item>
@@ -221,10 +255,11 @@ class KongfuEditor extends React.Component {
     );
 
     return (
-      <div>
+      <div key={page.file}>
         <div className='menu' style={style} onClick={this.onMenuClick.bind(this, page)}>
           {page == this.state.editTitlePage ?
-            <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle} onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
+            <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
+                   onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
             :
             <span>{page.title}</span>
           }
@@ -265,6 +300,42 @@ class KongfuEditor extends React.Component {
     return depth;
   }
 
+  onEdit = (targetKey, action) => {
+    this[action](targetKey);
+  }
+  add = () => {
+    const panes = this.state.panes;
+    createTerminal('nginx').then(res => {
+      console.log(res);//return;
+      setTimeout(() => {
+        let idx = this.state.terminalIdx++;
+        const activeKey = idx + '';
+        let panel = {
+          title: 'Terminal ' + idx,
+          content: <Term ws={res.data.result.WsAddr}/>,
+          key: idx + ''
+        }
+        panes.push(panel);
+        this.setState({panes, activeKey});
+      }, 2000)
+
+    })
+  }
+  remove = (targetKey) => {
+    let activeKey = this.state.activeKey;
+    let lastIndex;
+    this.state.panes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    const panes = this.state.panes.filter(pane => pane.key !== targetKey);
+    if (lastIndex >= 0 && activeKey === targetKey) {
+      activeKey = panes[lastIndex].key;
+    }
+    this.setState({panes, activeKey});
+  }
+
   render() {
     const {meta} = this.state;
     if (!meta) return null;
@@ -277,34 +348,65 @@ class KongfuEditor extends React.Component {
       <CannerEditor
         value={this.state.currentValue}
         onChange={this.onContentChange}
-        style={{height: '100%'}}
+        style={{minHeight: '100%'}}
         placeholder='请开始你的表演！'
       />
     ) : null;
 
     return (
-          <Layout style={{padding: '24px 0', background: '#fff', minHeight: '800px'}}>
-            <Sider width={250} style={{background: '#fff'}}
-                   breakpoint="lg"
-                   collapsedWidth="0"
-                   trigger="null"
-                   onCollapse={(collapsed, type) => {
-                     console.log(collapsed, type);
-                   }}
-            >
-              <div style={{paddingTop: '30px'}}>
-              {rpages}
-              </div>
-              <a style={{paddingLeft: '20px', display: 'block', margin: '20px 0'}} onClick={this.addPage}><Icon type='plus'/> 新增章节</a>
+      <Layout style={{height: '100%'}}>
+        <Sider width={250} style={{
+          background: '#fff',
+          borderRight: '1px solid #eee',
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0
+        }}
+               breakpoint="lg"
+               collapsedWidth="0"
+               trigger="null"
+               onCollapse={(collapsed, type) => {
+                 console.log(collapsed, type);
+               }}
+        >
+          <h3 style={{padding: '20px 0 0px 20px'}}>{this.state.kongfu.title}</h3>
+          <div style={{marginTop: '20px'}}>
+            {rpages}
+            <a style={{margin: 20}}><Icon type='plus'/> 添加章节</a>
+          </div>
 
-            </Sider>
-            <Content>
-              <div style={{padding: '20px', height: '100%'}}>
-                {editor}
-              </div>
+        </Sider>
+        <Layout style={{background: '#f0f2f5', marginLeft: 250, height: '100%', overflow: 'hidden'}}>
 
-            </Content>
-          </Layout>
+          <MyHeader style={{width: '100%', paddingLeft: 20}}/>
+          <Content>
+            <Row>
+              <Col span={15}>
+                <div
+                  style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
+                  {editor}
+                </div>
+              </Col>
+              <Col span={9}>
+                <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
+                  <Tabs
+                    // hideAdd
+                    //onChange={this.onChange}
+                    activeKey={this.state.activeKey}
+                    defaultActiveKey="1"
+                    type="editable-card"
+                    onEdit={this.onEdit}
+                  >
+                    {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
+                  </Tabs>
+                </div>
+              </Col>
+            </Row>
+
+          </Content>
+        </Layout>
+      </Layout>
     );
   }
 }

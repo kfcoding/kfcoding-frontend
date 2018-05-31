@@ -14,3 +14,11 @@ export function createKongfu(form) {
     body: JSON.stringify(form)
   });
 }
+
+export function getKongfu(kongfu_id) {
+  return request(API + '/kongfu/' + kongfu_id)
+}
+
+export function createTerminal(image) {
+  return request(API + '/cloudware/startContainer?type=1&imageName=' + image)
+}

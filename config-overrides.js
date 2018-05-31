@@ -22,5 +22,15 @@ module.exports = function override(config, env) {
       plugins: ["syntax-async-functions", "transform-regenerator"]
     }
   })
+  config.module.rules.push ({
+    test: resolve(__dirname, 'node_modules/ws'),
+    loader: "babel-loader",
+    options: {
+      babelrc: false,
+      cacheDirectory: false,
+      presets: ["env"],
+      plugins: ["syntax-async-functions", "transform-regenerator"]
+    }
+  })
   return config;
 }
