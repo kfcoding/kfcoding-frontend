@@ -373,7 +373,7 @@ class KongfuEditor extends React.Component {
           <h3 style={{padding: '20px 0 0px 20px'}}>{this.state.kongfu.title}</h3>
           <div style={{marginTop: '20px'}}>
             {rpages}
-            <a style={{margin: 20}}><Icon type='plus'/> 添加章节</a>
+            <a style={{margin: 20, display: 'block'}} onClick={this.addPage}><Icon type='plus'/> 添加章节</a>
           </div>
 
         </Sider>
