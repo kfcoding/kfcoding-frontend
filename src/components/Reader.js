@@ -30,25 +30,7 @@ class Reader extends React.Component {
       showLeft: true
     };
 
-    let idx = this.state.terminalIdx++;
-    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
-      console.log(res);//return;
-      res.text().then(res => {console.log(res)
-        setTimeout(() => {
-          this.state.panes.push({
-            title: 'Terminal ' + idx,
-            content: <Term ws={res}/>,
-            key: idx + ''
-          })
-          this.setState({panes: this.state.panes})
-        }, 1000)
-      })
 
-    })
-
-    this.left = React.createRef();
-    this.center = React.createRef();
-    this.right = React.createRef();
 
   }
 
@@ -65,15 +47,31 @@ class Reader extends React.Component {
     getKongfu(this.state.kongfu_id).then(res => {
       this.setState({kongfu: res.data.result.kongfu})
     })
-    // createTerminal('nginx').then(res => {
+
+    let idx = this.state.terminalIdx++;
+    // fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
     //   console.log(res);//return;
-    //   this.state.panes.push({
-    //     title: 'Termianl 1',
-    //     content: <Term ws={res.data.result.WsAddr}/>,
-    //     key: '1'
+    //   res.text().then(res => {console.log(res)
+    //     setTimeout(() => {
+    //       this.state.panes.push({
+    //         title: 'Terminal ' + idx,
+    //         content: <Term ws={res}/>,
+    //         key: idx + ''
+    //       })
+    //       this.setState({panes: this.state.panes})
+    //     }, 1000)
     //   })
-    //   this.setState({panes: this.state.panes})
+    //
     // })
+    createTerminal('nginx').then(res => {
+      console.log(res);//return;
+      this.state.panes.push({
+        title: 'Termianl ' + idx,
+        content: <Term ws={res.data.result.WsAddr}/>,
+        key: idx + ''
+      })
+      this.setState({panes: this.state.panes})
+    })
   }
 
   componentDidMount() {
