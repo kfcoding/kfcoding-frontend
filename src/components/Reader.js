@@ -4,6 +4,7 @@ import CannerEditor from 'kf-slate-editor';
 import { Value } from 'slate';
 import './Editor.css';
 import MyHeader from './Header';
+import TrainPanel from './TrainPanel';
 
 import request from "../utils/request";
 import { getKongfu, createTerminal } from "../services/kongfu";
@@ -24,9 +25,6 @@ class Reader extends React.Component {
       currentValue: null,
       meta: null,
       prefix: 'http://oss.book.kfcoding.com/' + this.props.match.params.kongfu_id,
-      activeKey: '1',
-      panes: [],
-      terminalIdx: 1,
       showLeft: true
     };
 
@@ -63,15 +61,7 @@ class Reader extends React.Component {
     //   })
     //
     // })
-    createTerminal('nginx').then(res => {
-      console.log(res);//return;
-      this.state.panes.push({
-        title: 'Termianl ' + idx,
-        content: <Term ws={res.data.result.WsAddr}/>,
-        key: idx + ''
-      })
-      this.setState({panes: this.state.panes})
-    })
+
   }
 
   componentDidMount() {
@@ -154,66 +144,8 @@ class Reader extends React.Component {
     return depth;
   }
 
-  // onChange = (activeKey) => {
-  //   this.setState({activeKey: activeKey});
-  // }
-  onEdit = (targetKey, action) => {
-    this[action](targetKey);
-  }
-  add = () => {
-    const panes = this.state.panes;
-    let idx = this.state.terminalIdx++;
-    const activeKey = idx + '';
-    // createTerminal('terminal-' + idx).then(res => {
-    //   console.log(res);//return;
-    //   setTimeout(() => {
-    //
-    //     let panel = {
-    //       title: 'Terminal ' + idx,
-    //       content: <Term ws={res.data.result.WsAddr}/>,
-    //       key: idx + ''
-    //     }
-    //     panes.push(panel);
-    //     this.setState({panes, activeKey});
-    //   }, 2000)
-    //
-    // })
-    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
-      console.log(res);//return;
-      res.text().then(res => {console.log(res)
-        setTimeout(() => {
-          this.state.panes.push({
-            title: 'Terminal ' + idx,
-            content: <Term ws={res}/>,
-            key: idx + ''
-          })
-          this.setState({panes: this.state.panes, activeKey: activeKey})
-        }, 1000)
-      })
-
-    })
-  }
-  remove = (targetKey) => {
-    let activeKey = this.state.activeKey;
-    let lastIndex;
-    this.state.panes.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1;
-      }
-    });
-    const panes = this.state.panes.filter(pane => pane.key !== targetKey);
-    if (lastIndex >= 0 && activeKey === targetKey) {
-      activeKey = panes[lastIndex].key;
-    }
-    this.setState({panes, activeKey});
-  }
-
   toggleLeft = () => {
     this.setState({showLeft: !this.state.showLeft})
-  }
-
-  onChangeTab = (activeKey) => {
-    this.setState({activeKey})
   }
 
   render() {
@@ -243,9 +175,10 @@ class Reader extends React.Component {
       overflow: 'hidden'
     }
 
+
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={leftWidth} ref={this.left} style={{
+        <Sider width={leftWidth} style={{
           background: '#fff',
           borderRight: '1px solid #eee',
           overflow: 'auto',
@@ -267,7 +200,7 @@ class Reader extends React.Component {
           </div>
 
         </Sider>
-        <Layout ref={this.center} style={centerLayoutStyle}>
+        <Layout style={centerLayoutStyle}>
 
           <MyHeader style={{width: '100%', paddingLeft: 20}}>
             <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
@@ -281,18 +214,7 @@ class Reader extends React.Component {
                 </div>
               </Col>
               <Col span={9} ref={this.right}>
-                <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
-                  <Tabs
-                    // hideAdd
-                    onChange={this.onChangeTab}
-                    activeKey={this.state.activeKey}
-                    defaultActiveKey="1"
-                    type="editable-card"
-                    onEdit={this.onEdit}
-                  >
-                    {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
-                  </Tabs>
-                </div>
+                <TrainPanel/>
               </Col>
             </Row>
 

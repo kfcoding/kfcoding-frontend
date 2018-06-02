@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "ali-oss": "^5.2.0",
-    "antd": "^3.5.4",
+    "antd": "^3.6.0",
     "babel-engine-plugin": "^0.2.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-import": "^1.7.0",

@@ -7,6 +7,7 @@ import { Value } from 'slate';
 import styles from './Editor.css';
 import MyHeader from './Header';
 import Term from './Term';
+import TrainPanel from "./TrainPanel/index";
 
 const {Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -48,9 +49,6 @@ class KongfuEditor extends React.Component {
       kongfu: {
         title: ''
       },
-      activeKey: '1',
-      panes: [],
-      terminalIdx: 1,
       showLeft: true
     };
 
@@ -301,64 +299,8 @@ class KongfuEditor extends React.Component {
     return depth;
   }
 
-  onEdit = (targetKey, action) => {
-    this[action](targetKey);
-  }
-  add = () => {
-    const panes = this.state.panes;
-    let idx = this.state.terminalIdx++;
-    const activeKey = idx + '';
-    // createTerminal('nginx').then(res => {
-    //   console.log(res);//return;
-    //   setTimeout(() => {
-    //     let idx = this.state.terminalIdx++;
-    //     const activeKey = idx + '';
-    //     let panel = {
-    //       title: 'Terminal ' + idx,
-    //       content: <Term ws={res.data.result.WsAddr}/>,
-    //       key: idx + ''
-    //     }
-    //     panes.push(panel);
-    //     this.setState({panes, activeKey});
-    //   }, 2000)
-    //
-    // })
-    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
-      console.log(res);//return;
-      res.text().then(res => {console.log(res)
-        setTimeout(() => {
-          this.state.panes.push({
-            title: 'Terminal ' + idx,
-            content: <Term ws={res}/>,
-            key: idx + ''
-          })
-          this.setState({panes: this.state.panes, activeKey: activeKey})
-        }, 1000)
-      })
-
-    })
-  }
-  remove = (targetKey) => {
-    let activeKey = this.state.activeKey;
-    let lastIndex;
-    this.state.panes.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1;
-      }
-    });
-    const panes = this.state.panes.filter(pane => pane.key !== targetKey);
-    if (lastIndex >= 0 && activeKey === targetKey) {
-      activeKey = panes[lastIndex].key;
-    }
-    this.setState({panes, activeKey});
-  }
-
   toggleLeft = () => {
     this.setState({showLeft: !this.state.showLeft})
-  }
-
-  onChangeTab = (activeKey) => {
-    this.setState({activeKey})
   }
 
   render() {
@@ -425,18 +367,7 @@ class KongfuEditor extends React.Component {
                 </div>
               </Col>
               <Col span={9}>
-                <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
-                  <Tabs
-                    // hideAdd
-                    onChange={this.onChangeTab}
-                    activeKey={this.state.activeKey}
-                    defaultActiveKey="1"
-                    type="editable-card"
-                    onEdit={this.onEdit}
-                  >
-                    {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
-                  </Tabs>
-                </div>
+                <TrainPanel/>
               </Col>
             </Row>
 
