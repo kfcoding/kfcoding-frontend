@@ -20,13 +20,14 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options) {
+export default function request(url, options, noauth) {
   if (!options) {
     options = {
       headers: {}
     };
   }
-  options.headers.Authorization = 'Bearer ' + localStorage.getItem('token')
+  if (!noauth)
+    options.headers.Authorization = 'Bearer ' + localStorage.getItem('token')
 
 
   return fetch(url, options)

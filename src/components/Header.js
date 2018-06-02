@@ -20,7 +20,8 @@ const menu = (
 class MyHeader extends React.Component {
   render() {
     return (
-      <Header style={this.props.style}>
+      <Header className='header' style={this.props.style}>
+        {this.props.children}
         <span style={{color: '#fff', fontSize: '24px'}}>
           <a href="/library" style={{color: '#fff'}}><img src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
         </span>

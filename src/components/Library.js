@@ -5,6 +5,8 @@ import CreateKongfuModal from "../components/CreateKongfuModal";
 import Book from "../components/Book";
 import { getMyKongfu } from "../services/users";
 import { createKongfu } from "../services/kongfu";
+import MyHeader from "./Header";
+import MyFooter from "./Footer";
 
 const ButtonGroup = Button.Group;
 
@@ -77,37 +79,41 @@ class Library extends React.Component {
 
     let username = JSON.parse(localStorage.getItem('user')).name;
     return (
-      <div style={{padding: '10px 50px'}}>
-        <Divider orientation="left" style={{fontSize: '28px'}}>藏经阁</Divider>
-        {kongfus}
-        <a onClick={this.showModal}>
-          <div className='container'>
-            <div className='book'>
-              <div className='front'>
-                <div className='addCover' style={{backgroundColor: '#525485'}}>
+      <Layout>
+        <MyHeader/>
+        <div style={{padding: '10px 50px'}}>
+          <Divider orientation="left" style={{fontSize: '28px'}}>藏经阁</Divider>
+          {kongfus}
+          <a onClick={this.showModal}>
+            <div className='container'>
+              <div className='book'>
+                <div className='front'>
+                  <div className='addCover' style={{backgroundColor: '#525485'}}>
+                    <h2>
+                      <span>{username}</span>
+                      <span>添加秘籍</span>
+                    </h2>
+                  </div>
+                </div>
+
+                <div className='left' style={{backgroundColor: '#525485'}}>
                   <h2>
-                    <span>{username}</span>
-                    <span>添加秘籍</span>
+                    <span>作者</span>
+                    <span>名称</span>
                   </h2>
                 </div>
               </div>
-
-              <div className='left' style={{backgroundColor: '#525485'}}>
-                <h2>
-                  <span>作者</span>
-                  <span>名称</span>
-                </h2>
-              </div>
             </div>
-          </div>
-        </a>
-        <CreateKongfuModal
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-      </div>
+          </a>
+          <CreateKongfuModal
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
+        </div>
+        <MyFooter/>
+      </Layout>
     );
   }
 }

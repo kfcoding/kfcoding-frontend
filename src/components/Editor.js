@@ -51,6 +51,7 @@ class KongfuEditor extends React.Component {
       activeKey: '1',
       panes: [],
       terminalIdx: 1,
+      showLeft: true
     };
 
     this.saveTimer();
@@ -305,19 +306,35 @@ class KongfuEditor extends React.Component {
   }
   add = () => {
     const panes = this.state.panes;
-    createTerminal('nginx').then(res => {
+    let idx = this.state.terminalIdx++;
+    const activeKey = idx + '';
+    // createTerminal('nginx').then(res => {
+    //   console.log(res);//return;
+    //   setTimeout(() => {
+    //     let idx = this.state.terminalIdx++;
+    //     const activeKey = idx + '';
+    //     let panel = {
+    //       title: 'Terminal ' + idx,
+    //       content: <Term ws={res.data.result.WsAddr}/>,
+    //       key: idx + ''
+    //     }
+    //     panes.push(panel);
+    //     this.setState({panes, activeKey});
+    //   }, 2000)
+    //
+    // })
+    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
       console.log(res);//return;
-      setTimeout(() => {
-        let idx = this.state.terminalIdx++;
-        const activeKey = idx + '';
-        let panel = {
-          title: 'Terminal ' + idx,
-          content: <Term ws={res.data.result.WsAddr}/>,
-          key: idx + ''
-        }
-        panes.push(panel);
-        this.setState({panes, activeKey});
-      }, 2000)
+      res.text().then(res => {console.log(res)
+        setTimeout(() => {
+          this.state.panes.push({
+            title: 'Terminal ' + idx,
+            content: <Term ws={res}/>,
+            key: idx + ''
+          })
+          this.setState({panes: this.state.panes, activeKey: activeKey})
+        }, 1000)
+      })
 
     })
   }
@@ -334,6 +351,14 @@ class KongfuEditor extends React.Component {
       activeKey = panes[lastIndex].key;
     }
     this.setState({panes, activeKey});
+  }
+
+  toggleLeft = () => {
+    this.setState({showLeft: !this.state.showLeft})
+  }
+
+  onChangeTab = (activeKey) => {
+    this.setState({activeKey})
   }
 
   render() {
@@ -353,9 +378,18 @@ class KongfuEditor extends React.Component {
       />
     ) : null;
 
+    let leftWidth = this.state.showLeft ? 250 : 0;
+
+    let centerLayoutStyle = {
+      background: '#f0f2f5',
+      marginLeft: leftWidth,
+      height: '100%',
+      overflow: 'hidden'
+    }
+
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={250} style={{
+        <Sider width={leftWidth} style={{
           background: '#fff',
           borderRight: '1px solid #eee',
           overflow: 'auto',
@@ -377,9 +411,11 @@ class KongfuEditor extends React.Component {
           </div>
 
         </Sider>
-        <Layout style={{background: '#f0f2f5', marginLeft: 250, height: '100%', overflow: 'hidden'}}>
+        <Layout style={centerLayoutStyle}>
 
-          <MyHeader style={{width: '100%', paddingLeft: 20}}/>
+          <MyHeader style={{width: '100%', paddingLeft: 20}}>
+            <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+          </MyHeader>
           <Content>
             <Row>
               <Col span={15}>
@@ -392,7 +428,7 @@ class KongfuEditor extends React.Component {
                 <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
                   <Tabs
                     // hideAdd
-                    //onChange={this.onChange}
+                    onChange={this.onChangeTab}
                     activeKey={this.state.activeKey}
                     defaultActiveKey="1"
                     type="editable-card"

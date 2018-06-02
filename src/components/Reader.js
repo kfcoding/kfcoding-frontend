@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Tabs } from 'antd';
+import { Layout, Row, Col, Tabs, Icon } from 'antd';
 import CannerEditor from 'kf-slate-editor';
 import { Value } from 'slate';
 import './Editor.css';
@@ -27,21 +27,28 @@ class Reader extends React.Component {
       activeKey: '1',
       panes: [],
       terminalIdx: 1,
+      showLeft: true
     };
 
-    createTerminal('nginx').then(res => {
+    let idx = this.state.terminalIdx++;
+    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
       console.log(res);//return;
-      setTimeout(() => {
-        let idx = this.state.terminalIdx++;
-        this.state.panes.push({
-          title: 'Terminal ' + idx,
-          content: <Term ws={res.data.result.WsAddr}/>,
-          key: idx + ''
-        })
-        this.setState({panes: this.state.panes})
-      }, 5000)
+      res.text().then(res => {console.log(res)
+        setTimeout(() => {
+          this.state.panes.push({
+            title: 'Terminal ' + idx,
+            content: <Term ws={res}/>,
+            key: idx + ''
+          })
+          this.setState({panes: this.state.panes})
+        }, 1000)
+      })
 
     })
+
+    this.left = React.createRef();
+    this.center = React.createRef();
+    this.right = React.createRef();
 
   }
 
@@ -157,19 +164,34 @@ class Reader extends React.Component {
   }
   add = () => {
     const panes = this.state.panes;
-    createTerminal('nginx').then(res => {
+    let idx = this.state.terminalIdx++;
+    const activeKey = idx + '';
+    // createTerminal('terminal-' + idx).then(res => {
+    //   console.log(res);//return;
+    //   setTimeout(() => {
+    //
+    //     let panel = {
+    //       title: 'Terminal ' + idx,
+    //       content: <Term ws={res.data.result.WsAddr}/>,
+    //       key: idx + ''
+    //     }
+    //     panes.push(panel);
+    //     this.setState({panes, activeKey});
+    //   }, 2000)
+    //
+    // })
+    fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
       console.log(res);//return;
-      setTimeout(() => {
-        let idx = this.state.terminalIdx++;
-        const activeKey = idx + '';
-        let panel = {
-          title: 'Terminal ' + idx,
-          content: <Term ws={res.data.result.WsAddr}/>,
-          key: idx + ''
-        }
-        panes.push(panel);
-        this.setState({panes, activeKey});
-      }, 2000)
+      res.text().then(res => {console.log(res)
+        setTimeout(() => {
+          this.state.panes.push({
+            title: 'Terminal ' + idx,
+            content: <Term ws={res}/>,
+            key: idx + ''
+          })
+          this.setState({panes: this.state.panes, activeKey: activeKey})
+        }, 1000)
+      })
 
     })
   }
@@ -186,6 +208,14 @@ class Reader extends React.Component {
       activeKey = panes[lastIndex].key;
     }
     this.setState({panes, activeKey});
+  }
+
+  toggleLeft = () => {
+    this.setState({showLeft: !this.state.showLeft})
+  }
+
+  onChangeTab = (activeKey) => {
+    this.setState({activeKey})
   }
 
   render() {
@@ -205,10 +235,19 @@ class Reader extends React.Component {
         readOnly={true}
       />
     ) : null;
-console.log('ls', this.state.activeKey)
+
+    let leftWidth = this.state.showLeft ? 250 : 0;
+
+    let centerLayoutStyle = {
+      background: '#f0f2f5',
+      marginLeft: leftWidth,
+      height: '100%',
+      overflow: 'hidden'
+    }
+
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={250} style={{
+        <Sider width={leftWidth} ref={this.left} style={{
           background: '#fff',
           borderRight: '1px solid #eee',
           overflow: 'auto',
@@ -230,22 +269,24 @@ console.log('ls', this.state.activeKey)
           </div>
 
         </Sider>
-        <Layout style={{background: '#f0f2f5', marginLeft: 250, height: '100%', overflow: 'hidden'}}>
+        <Layout ref={this.center} style={centerLayoutStyle}>
 
-          <MyHeader style={{width: '100%', paddingLeft: 20}}/>
+          <MyHeader style={{width: '100%', paddingLeft: 20}}>
+            <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+          </MyHeader>
           <Content>
             <Row>
-              <Col span={14}>
+              <Col span={15}>
                 <div
                   style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
                   {editor}
                 </div>
               </Col>
-              <Col span={10}>
+              <Col span={9} ref={this.right}>
                 <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
                   <Tabs
                     // hideAdd
-                    //onChange={this.onChange}
+                    onChange={this.onChangeTab}
                     activeKey={this.state.activeKey}
                     defaultActiveKey="1"
                     type="editable-card"
