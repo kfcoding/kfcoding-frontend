@@ -96,6 +96,7 @@ class TrainPanel extends React.Component {
           Python
         </Menu.Item>
         <Menu.Item key="nodejs">Nodejs</Menu.Item>
+        <Menu.Item key="nginx">Nginx</Menu.Item>
       </Menu>
     );
 
