@@ -9,6 +9,7 @@ import MyHeader from './Header';
 import Term from './Term';
 import TrainPanel from "./TrainPanel/index";
 import Sidebar from "./Sidebar/index";
+import SplitPane from 'react-split-pane';
 
 const {Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -325,39 +326,46 @@ class KongfuEditor extends React.Component {
 
     let centerLayoutStyle = {
       background: '#f0f2f5',
-      marginLeft: leftWidth,
       height: '100%',
       overflow: 'hidden'
     }
 
     return (
       <Layout style={{height: '100%'}}>
-        <Sidebar
-          width={leftWidth}
-          title={this.state.kongfu.title}
-          pages={rpages}
-          addPage={this.addPage}
-        />
-        <Layout style={centerLayoutStyle}>
+        <SplitPane split="vertical"
+                   defaultSize={250}
+        >
+          <div>
+            <Sidebar
+              width='100%'
+              title={this.state.kongfu.title}
+              pages={rpages}
+              addPage={this.addPage}
+            />
+          </div>
+          <div>
+            <Layout style={centerLayoutStyle}>
 
-          <MyHeader style={{width: '100%', paddingLeft: 20}}>
-            <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
-          </MyHeader>
-          <Content>
-            <Row>
-              <Col span={15}>
-                <div
-                  style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
-                  {editor}
-                </div>
-              </Col>
-              <Col span={9}>
-                <TrainPanel/>
-              </Col>
-            </Row>
+              <MyHeader style={{width: '100%', paddingLeft: 20}}>
+                <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+              </MyHeader>
+              <Content>
+                <SplitPane defaultSize='65%'>
+                  <div>
+                    <div
+                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
+                      {editor}
+                    </div>
+                  </div>
+                  <div>
+                    <TrainPanel/>
+                  </div>
+                </SplitPane>
 
-          </Content>
-        </Layout>
+              </Content>
+            </Layout>
+          </div>
+        </SplitPane>
       </Layout>
     );
   }

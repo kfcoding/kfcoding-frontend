@@ -10,6 +10,7 @@ import request from "../utils/request";
 import { getKongfu, createTerminal } from "../services/kongfu";
 import Term from "./Term";
 import Sidebar from "./Sidebar/index";
+import SplitPane from 'react-split-pane';
 
 const {Content, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -171,7 +172,6 @@ class Reader extends React.Component {
 
     let centerLayoutStyle = {
       background: '#f0f2f5',
-      marginLeft: leftWidth,
       height: '100%',
       overflow: 'hidden'
     }
@@ -179,33 +179,43 @@ class Reader extends React.Component {
 
     return (
       <Layout style={{height: '100%'}}>
-        <Sidebar
-          width={leftWidth}
-          title={this.state.kongfu.title}
-          pages={rpages}
-          addPage={this.addPage}
-          readOnly={true}
-        />
-        <Layout style={centerLayoutStyle}>
+        <SplitPane split="vertical" minSize={60}
+                   defaultSize={ 250 }
+        >
+          <div>
+            <Sidebar
+              width='100%'
+              title={this.state.kongfu.title}
+              pages={rpages}
+              addPage={this.addPage}
+              readOnly={true}
+            />
+          </div>
+          <div>
+            <Layout style={centerLayoutStyle}>
 
-          <MyHeader style={{width: '100%', paddingLeft: 20}}>
-            <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
-          </MyHeader>
-          <Content>
-            <Row>
-              <Col span={15}>
-                <div
-                  style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
-                  {editor}
-                </div>
-              </Col>
-              <Col span={9} ref={this.right}>
-                <TrainPanel/>
-              </Col>
-            </Row>
+              <MyHeader style={{width: '100%', paddingLeft: 20}}>
+                <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+              </MyHeader>
+              <Content>
+                <SplitPane defaultSize='65%'>
+                  <div>
+                    <div
+                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
+                      {editor}
+                    </div>
+                  </div>
+                  <div>
+                    <TrainPanel/>
+                  </div>
+                </SplitPane>
 
-          </Content>
-        </Layout>
+              </Content>
+            </Layout>
+          </div>
+        </SplitPane>
+
+
       </Layout>
     );
   }

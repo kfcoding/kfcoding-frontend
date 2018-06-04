@@ -13,7 +13,6 @@ class Sidebar extends React.Component {
         borderRight: '1px solid #eee',
         overflow: 'auto',
         height: '100vh',
-        position: 'fixed',
         left: 0
       }}
              breakpoint="lg"
@@ -23,12 +22,12 @@ class Sidebar extends React.Component {
                console.log(collapsed, type);
              }}
       >
-        <h3 style={{padding: '20px 0 0px 20px'}}>{title}</h3>
+        <h3 style={{padding: '20px 0 0px 20px', height: 40, whiteSpace: 'nowrap'}}>{title}</h3>
         <div style={{marginTop: '20px'}}>
           {pages}
           {readOnly?
             null:
-            <a style={{margin: 20, display: 'block'}} onClick={addPage}><Icon type='plus'/> 添加章节</a>
+            <a style={{margin: 20, display: 'block', whiteSpace: 'nowrap'}} onClick={addPage}><Icon type='plus'/> 添加章节</a>
           }
         </div>
 
