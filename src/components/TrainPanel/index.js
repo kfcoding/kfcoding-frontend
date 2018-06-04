@@ -15,7 +15,7 @@ class TrainPanel extends React.Component {
       activeKey: '1',
     }
   }
-  
+
   onEdit = (targetKey, action) => {
     this[action](targetKey);
   }

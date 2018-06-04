@@ -1,3 +1,6 @@
+.menu {
+    position: relative;
+}
 .menu span {
     outline: none;
 }
@@ -8,9 +11,17 @@
     background: #e6f7ff;
     color: #1890ff;
 }
+.menu .title {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+}
 .dropdown {
     display: none;
     float: right;
+    position: absolute;
+    right: 10px;
+    top: 0;
 }
 .menu:hover .dropdown {
     display: inline-block;

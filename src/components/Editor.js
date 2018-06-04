@@ -8,6 +8,7 @@ import styles from './Editor.css';
 import MyHeader from './Header';
 import Term from './Term';
 import TrainPanel from "./TrainPanel/index";
+import Sidebar from "./Sidebar/index";
 
 const {Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -215,7 +216,7 @@ class KongfuEditor extends React.Component {
       height: '40px',
       lineHeight: '40px',
       cursor: 'pointer',
-      padding: '0 20px 0 ' + this._getDepth(page) * 20 + 'px'
+      padding: '0 30px 0 ' + this._getDepth(page) * 20 + 'px'
     };
     if (this.state.currentPage == page) {
       style.background = '#e6f7ff';
@@ -258,9 +259,9 @@ class KongfuEditor extends React.Component {
         <div className='menu' style={style} onClick={this.onMenuClick.bind(this, page)}>
           {page == this.state.editTitlePage ?
             <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
-                   onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
+                   onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px', width: '100%'}}/>
             :
-            <span>{page.title}</span>
+            <span className='title'>{page.title}</span>
           }
           <span className='dropdown'>
           <Dropdown overlay={menu} trigger={['click']}>
@@ -331,28 +332,12 @@ class KongfuEditor extends React.Component {
 
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={leftWidth} style={{
-          background: '#fff',
-          borderRight: '1px solid #eee',
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0
-        }}
-               breakpoint="lg"
-               collapsedWidth="0"
-               trigger="null"
-               onCollapse={(collapsed, type) => {
-                 console.log(collapsed, type);
-               }}
-        >
-          <h3 style={{padding: '20px 0 0px 20px'}}>{this.state.kongfu.title}</h3>
-          <div style={{marginTop: '20px'}}>
-            {rpages}
-            <a style={{margin: 20, display: 'block'}} onClick={this.addPage}><Icon type='plus'/> 添加章节</a>
-          </div>
-
-        </Sider>
+        <Sidebar
+          width={leftWidth}
+          title={this.state.kongfu.title}
+          pages={rpages}
+          addPage={this.addPage}
+        />
         <Layout style={centerLayoutStyle}>
 
           <MyHeader style={{width: '100%', paddingLeft: 20}}>

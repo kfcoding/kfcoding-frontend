@@ -9,6 +9,7 @@ import TrainPanel from './TrainPanel';
 import request from "../utils/request";
 import { getKongfu, createTerminal } from "../services/kongfu";
 import Term from "./Term";
+import Sidebar from "./Sidebar/index";
 
 const {Content, Sider} = Layout;
 const TabPane = Tabs.TabPane;
@@ -112,7 +113,7 @@ class Reader extends React.Component {
             <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
                    onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
             :
-            <span>{page.title}</span>
+            <span className='title'>{page.title}</span>
           }
         </div>
         {children}
@@ -178,28 +179,13 @@ class Reader extends React.Component {
 
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={leftWidth} style={{
-          background: '#fff',
-          borderRight: '1px solid #eee',
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0
-        }}
-               breakpoint="lg"
-               collapsedWidth="0"
-               trigger="null"
-               onCollapse={(collapsed, type) => {
-                 console.log(collapsed, type);
-               }}
-        >
-          <h3 style={{padding: '20px 0 0px 20px'}}>{this.state.kongfu.title}</h3>
-          <div style={{marginTop: '20px'}}>
-            {rpages}
-
-          </div>
-
-        </Sider>
+        <Sidebar
+          width={leftWidth}
+          title={this.state.kongfu.title}
+          pages={rpages}
+          addPage={this.addPage}
+          readOnly={true}
+        />
         <Layout style={centerLayoutStyle}>
 
           <MyHeader style={{width: '100%', paddingLeft: 20}}>
