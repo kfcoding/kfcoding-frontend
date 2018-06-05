@@ -1,18 +1,16 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Icon, Row, Col, Tabs } from 'antd';
+import { Layout, Menu, Dropdown, Icon } from 'antd';
 import request from "../utils/request";
-import { getOssToken, getKongfu, createTerminal } from "../services/kongfu";
+import { getOssToken, getKongfu } from "../services/kongfu";
 import CannerEditor from 'kf-slate-editor';
 import { Value } from 'slate';
 import styles from './Editor.css';
 import MyHeader from './Header';
-import Term from './Term';
 import TrainPanel from "./TrainPanel/index";
 import Sidebar from "./Sidebar/index";
 import SplitPane from 'react-split-pane';
 
-const {Header, Content, Footer, Sider} = Layout;
-const TabPane = Tabs.TabPane;
+const {Content} = Layout;
 
 const Alioss = require('ali-oss');
 
@@ -55,6 +53,13 @@ class KongfuEditor extends React.Component {
     };
 
     this.saveTimer();
+    window.onbeforeunload = function(e) {
+      alert("The Window is closing!");
+    };
+  }
+
+  componentWillUnmount() {
+    this._saveCurrentPage()
   }
 
   componentWillMount() {
@@ -96,22 +101,25 @@ class KongfuEditor extends React.Component {
 
   saveTimer() {
     setInterval(() => {
-      if (this.state.dirty) {
-        this._saveCurrentPage();
-      }
+      this._saveCurrentPage()
     }, 5000)
 
   }
 
   _saveCurrentPage() {
-    let page = this.state.currentPage;
+    if (!this.state.currentPage) {
+      return;
+    }
+    if (this.state.dirty) {
+      let page = this.state.currentPage;
 
-    let filename = this.state.kongfu_id + '/' + page.file;
-    let pushdata = this.state.currentValue.toJSON();
+      let filename = this.state.kongfu_id + '/' + page.file;
+      let pushdata = this.state.currentValue.toJSON();
 
-    this.state.ossclient.put(filename, new Alioss.Buffer(JSON.stringify(pushdata))).then(() => {
-      this.state.dirty = false;
-    })
+      this.state.ossclient.put(filename, new Alioss.Buffer(JSON.stringify(pushdata))).then(() => {
+        this.state.dirty = false;
+      })
+    }
   }
 
   addPage = ({parent}) => {
@@ -346,7 +354,7 @@ class KongfuEditor extends React.Component {
           <div>
             <Layout style={centerLayoutStyle}>
 
-              <MyHeader style={{width: '100%', paddingLeft: 20}}>
+              <MyHeader style={{width: '100%', paddingLeft: 20, paddingRight: 20}}>
                 <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
               </MyHeader>
               <Content>

@@ -21,11 +21,8 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options, noauth) {
-  if (!options) {
-    options = {
-      headers: {}
-    };
-  }
+  options = options || {};
+  options.headers = options.headers || {};
   if (!noauth)
     options.headers.Authorization = 'Bearer ' + localStorage.getItem('token')
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Tabs, Icon } from 'antd';
+import { Layout, Icon } from 'antd';
 import CannerEditor from 'kf-slate-editor';
 import { Value } from 'slate';
 import './Editor.css';
@@ -7,13 +7,11 @@ import MyHeader from './Header';
 import TrainPanel from './TrainPanel';
 
 import request from "../utils/request";
-import { getKongfu, createTerminal } from "../services/kongfu";
-import Term from "./Term";
+import { getKongfu } from "../services/kongfu";
 import Sidebar from "./Sidebar/index";
 import SplitPane from 'react-split-pane';
 
-const {Content, Sider} = Layout;
-const TabPane = Tabs.TabPane;
+const {Content} = Layout;
 
 class Reader extends React.Component {
   constructor(props) {
@@ -37,6 +35,13 @@ class Reader extends React.Component {
   componentWillMount() {
 
     request(this.state.prefix + '/meta.json').then(res => {
+      if (res.err) {
+        res = {
+          data: {
+            pages: []
+          }
+        }
+      }
       this.setState({meta: res.data}, () => {
         if (this.state.meta.pages.length) {
           this.openPage(this.state.meta.pages[0]);
@@ -194,7 +199,7 @@ class Reader extends React.Component {
           <div>
             <Layout style={centerLayoutStyle}>
 
-              <MyHeader style={{width: '100%', paddingLeft: 20}}>
+              <MyHeader style={{width: '100%', paddingLeft: 20, paddingRight: 20}}>
                 <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
               </MyHeader>
               <Content>

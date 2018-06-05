@@ -26,13 +26,13 @@ class MyHeader extends React.Component {
           <a href="/library" style={{color: '#fff'}}><img src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
         </span>
         <span style={{float: 'right'}}>
-          <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" href="#">
+          {/*<Dropdown overlay={menu}>*/}
+            <a className="ant-dropdown-link" href="/home">
               <Avatar src={ getUser().avatarUrl}></Avatar>
               <span style={{color: '#fff', padding: '0 15px'}}>{ getUser().name }</span>
-              <Icon type="down" style={{color: '#fff'}}/>
+              {/*<Icon type="down" style={{color: '#fff'}}/>*/}
             </a>
-          </Dropdown>
+          {/*</Dropdown>*/}
 
         </span>
       </Header>

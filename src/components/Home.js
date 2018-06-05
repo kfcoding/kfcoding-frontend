@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Library.css';
-import { Layout, Menu, Row, Col, Card, Icon, Avatar, Divider, Dropdown, Modal, Button } from 'antd';
+import { Layout, Divider, Button } from 'antd';
 import CreateKongfuModal from "../components/CreateKongfuModal";
 import Book from "../components/Book";
 import { getMyKongfu } from "../services/users";
@@ -10,7 +10,7 @@ import MyFooter from "./Footer";
 
 const ButtonGroup = Button.Group;
 
-class Library extends React.Component {
+class Home extends React.Component {
   state = {
     loading: false,
     visible: false,
@@ -118,4 +118,4 @@ class Library extends React.Component {
   }
 }
 
-export default (Library);
+export default (Home);

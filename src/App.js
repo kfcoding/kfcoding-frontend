@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
-import { Layout } from 'antd';
-import MyHeader from './components/Header';
-import MyFooter from './components/Footer';
 import {
-  BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-import logo from './logo.svg';
 import './App.css';
 import Reader from "./components/Reader";
 import KongfuEditor from "./components/Editor";
 import Signin from "./components/Signin";
 import Callback from "./components/Callback";
-import Library from "./components/Library";
-// import CannerEditor from 'kf-slate-editor';
-// import {Value} from 'slate';
-
-const {Header, Content, Footer, Sider} = Layout;
+import Home from "./components/Home";
+import Library from "./components/Library/index";
 
 class App extends Component {
   constructor() {
@@ -37,8 +29,8 @@ class App extends Component {
         <Route exact path='/editor/:kongfu_id' component={props => <KongfuEditor {...props}/>}/>
         <Route path='/reader/:kongfu_id' component={props => <Reader {...props}/>}/>
         <Route path='/auth/callback' component={Callback}/>
+        <Route path='/home' component={Home}/>
         <Route path='/library' component={Library}/>
-
       </div>
     );
   }

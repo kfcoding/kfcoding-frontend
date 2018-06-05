@@ -1,7 +1,9 @@
 import React from 'react';
 import { Tabs, Icon, Menu, Dropdown } from 'antd';
 import Term from '../Term';
-import { createTerminal } from "../../services/kongfu";
+import { createTerminal, createCloudware } from "../../services/kongfu";
+import Window from "./Window";
+import Cloudware from "./Cloudware";
 
 const TabPane = Tabs.TabPane;
 
@@ -24,6 +26,18 @@ class TrainPanel extends React.Component {
     const panes = this.state.panes;
     let idx = this.state.terminalIdx++;
     const activeKey = idx + '';
+    if (type == 'daocloud.io/shaoling/kfcoding-rstudio-latest:master') {
+      createCloudware(type).then(res => {
+        console.log(res)
+        panes.push({
+          title: type + '-' + idx,
+          content: <Cloudware ws={res.data.result.WsAddr}/>,
+          key: idx + ''
+        })
+        this.setState({panes, activeKey})
+      })
+      return;
+    }
     createTerminal(type).then(res => {
       console.log(res);//return;
       panes.push({
@@ -33,34 +47,7 @@ class TrainPanel extends React.Component {
       })
       this.setState({panes, activeKey})
     })
-    // createTerminal('terminal-' + idx).then(res => {
-    //   console.log(res);//return;
-    //   setTimeout(() => {
-    //
-    //     let panel = {
-    //       title: 'Terminal ' + idx,
-    //       content: <Term ws={res.data.result.WsAddr}/>,
-    //       key: idx + ''
-    //     }
-    //     panes.push(panel);
-    //     this.setState({panes, activeKey});
-    //   }, 2000)
-    //
-    // })
-    // fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
-    //   console.log(res);//return;
-    //   res.text().then(res => {console.log(res)
-    //     setTimeout(() => {
-    //       this.state.panes.push({
-    //         title: 'Terminal ' + idx,
-    //         content: <Term ws={res}/>,
-    //         key: idx + ''
-    //       })
-    //       this.setState({panes: this.state.panes, activeKey: activeKey})
-    //     }, 1000)
-    //   })
-    //
-    // })
+
   }
 
   remove = (targetKey) => {
@@ -95,8 +82,9 @@ class TrainPanel extends React.Component {
         <Menu.Item key="python">
           Python
         </Menu.Item>
-        <Menu.Item key="nodejs">Nodejs</Menu.Item>
+        <Menu.Item key="node">Node</Menu.Item>
         <Menu.Item key="nginx">Nginx</Menu.Item>
+        <Menu.Item key='daocloud.io/shaoling/kfcoding-rstudio-latest:master'>Rstudio</Menu.Item>
       </Menu>
     );
 

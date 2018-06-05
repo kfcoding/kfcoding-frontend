@@ -19,7 +19,7 @@ class Signin extends React.Component {
         console.log(res)
         localStorage.setItem('uid', res.data.result.user.id);
         localStorage.setItem('user', JSON.stringify(res.data.result.user));
-        window.location.replace('/library');
+        window.location.replace('/home');
 
       });
     })

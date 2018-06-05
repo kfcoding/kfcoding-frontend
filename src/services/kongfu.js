@@ -15,6 +15,14 @@ export function createKongfu(form) {
   });
 }
 
+export function getAllKongfu() {
+  return request(API + '/kongfu/list');
+}
+
+export function getUserKongfu(uid) {
+  return request(API + '/' + uid + '/kongfu');
+}
+
 export function getKongfu(kongfu_id) {
   return request(API + '/kongfu/' + kongfu_id)
 }
@@ -26,4 +34,17 @@ export function createTerminal(image) {
   //   }
   // }, true)
   return request(API + '/cloudware/startContainer?type=1&imageName=' + image)
+}
+
+export function createCloudware(image) {
+  return request(API + '/cloudware/startContainer', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      type: 0,
+      imageName: image
+    })
+  });
 }
