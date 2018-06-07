@@ -1,8 +1,8 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Icon } from 'antd';
+import { Layout, Menu, Dropdown, Icon, Popover, Select, Upload } from 'antd';
 import request from "../utils/request";
 import { getOssToken, getKongfu } from "../services/kongfu";
-import CannerEditor from 'kf-slate-editor';
+import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import styles from './Editor.css';
 import MyHeader from './Header';
@@ -40,6 +40,7 @@ class KongfuEditor extends React.Component {
     super(props)
     this.state = {
       kongfu_id: this.props.match.params.kongfu_id,
+      sts: '',
       ossclient: null,
       currentPage: null,
       currentValue: null,
@@ -53,9 +54,6 @@ class KongfuEditor extends React.Component {
     };
 
     this.saveTimer();
-    window.onbeforeunload = function(e) {
-      alert("The Window is closing!");
-    };
   }
 
   componentWillUnmount() {
@@ -64,7 +62,7 @@ class KongfuEditor extends React.Component {
 
   componentWillMount() {
     let kongfu_id = this.state.kongfu_id;
-    getOssToken(kongfu_id).then(res => {
+    getOssToken(kongfu_id).then(res => {console.log(res.data.result)
       var client = new Alioss.Wrapper({
         region: 'oss-cn-hangzhou',
         //endpoint: 'oss.book.kfcoding.com',
@@ -73,6 +71,7 @@ class KongfuEditor extends React.Component {
         stsToken: res.data.result.assumeRoleResponse.credentials.securityToken,
         bucket: 'kfcoding'
       });
+      this.state.sts = res.data.result.assumeRoleResponse.credentials.accessKeyId;
       this.state.ossclient = client;
 
       request(client.signatureUrl(kongfu_id + '/meta.json')).then(res => {
@@ -110,7 +109,7 @@ class KongfuEditor extends React.Component {
     if (!this.state.currentPage) {
       return;
     }
-    if (this.state.dirty) {
+    if (this.state.dirty || localStorage.getItem('dirty') == 'true') {
       let page = this.state.currentPage;
 
       let filename = this.state.kongfu_id + '/' + page.file;
@@ -118,6 +117,7 @@ class KongfuEditor extends React.Component {
 
       this.state.ossclient.put(filename, new Alioss.Buffer(JSON.stringify(pushdata))).then(() => {
         this.state.dirty = false;
+        localStorage.setItem('dirty', 'false');
       })
     }
   }
@@ -321,16 +321,36 @@ class KongfuEditor extends React.Component {
       return this.getPageList(p)
     })
 
+    let serviceConfig = {
+      name: "image",
+      accept: "image/*",
+      customRequest: ({file, onSuccess}) => {
+        this.state.ossclient.put(this.state.kongfu_id + '/resources/' + new Date().getTime() + '.png', file).then(res => {
+          res.data = {
+            link: res.url
+          }
+
+          onSuccess(res)
+          this.state.dirty = true;
+        });
+        return true;
+      },
+      action: 'https://kfcoding-test.oss-cn-shanghai.aliyuncs.com/pic.png',
+      headers: {
+        //Authorization: 'OSS ' + this.state.sign,
+        "X-Requested-With": null // https://github.com/react-component/upload/issues/33
+      }
+    };
+
     let editor = this.state.currentPage ? (
       <CannerEditor
         value={this.state.currentValue}
         onChange={this.onContentChange}
         style={{minHeight: '100%'}}
         placeholder='请开始你的表演！'
+        serviceConfig={serviceConfig}
       />
     ) : null;
-
-    let leftWidth = this.state.showLeft ? 250 : 0;
 
     let centerLayoutStyle = {
       background: '#f0f2f5',
@@ -374,6 +394,9 @@ class KongfuEditor extends React.Component {
             </Layout>
           </div>
         </SplitPane>
+        <div style={{position: 'fixed', display: 'none'}}>
+        <Popover/><Select/><Upload/>
+        </div>
       </Layout>
     );
   }

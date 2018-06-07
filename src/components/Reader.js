@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Icon } from 'antd';
-import CannerEditor from 'kf-slate-editor';
+import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import './Editor.css';
 import MyHeader from './Header';

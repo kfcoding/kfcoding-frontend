@@ -13,14 +13,9 @@ import Library from "./components/Library/index";
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      value: ''//Value.fromJSON(initialValue)
-    }
   }
 
   render() {
-    let value = this.state.value;
-    const onChange = ({value}) => this.setState({value});
 
     return (
       <div style={{height: '100%'}}>
