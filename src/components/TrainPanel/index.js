@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs, Icon, Menu, Dropdown } from 'antd';
 import Term from '../Term';
 import { createTerminal, createCloudware } from "../../services/kongfu";
-import Window from "./Window";
+import './style.css';
 import Cloudware from "./Cloudware";
 
 const TabPane = Tabs.TabPane;
@@ -31,7 +31,7 @@ class TrainPanel extends React.Component {
         console.log(res)
         panes.push({
           title: type + '-' + idx,
-          content: <Cloudware ws={res.data.result.WsAddr}/>,
+          content: <Cloudware ws={'ws://' + res.data.result.webSocketAddress}/>,
           key: idx + ''
         })
         this.setState({panes, activeKey})
@@ -42,7 +42,7 @@ class TrainPanel extends React.Component {
       console.log(res);//return;
       panes.push({
         title: type + '-' + idx,
-        content: <Term ws={res.data.result.WsAddr}/>,
+        content: <Term ws={res.data.result.WsAddr} style={{height: '100%'}}/>,
         key: idx + ''
       })
       this.setState({panes, activeKey})
@@ -105,8 +105,9 @@ class TrainPanel extends React.Component {
           type="editable-card"
           onEdit={this.onEdit}
           tabBarExtraContent={extra}
+          style={{height: '100%'}}
         >
-          {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
+          {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} style={{height: '100%'}}>{pane.content}</TabPane>)}
         </Tabs>
       </div>
     )

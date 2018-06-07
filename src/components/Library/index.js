@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
+import { Link } from 'react-router-dom';
 import MyHeader from "../Header";
 import MyFooter from "../Footer";
 import { getAllKongfu } from "../../services/kongfu";
@@ -30,9 +31,9 @@ class Library extends React.Component {
       let edithref = '/editor/' + kf.id;
       return (
         <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}} key={kf.id}>
-          <a href={viewhref} style={{display: 'block', width: '240px', height: '320px'}}>
+            <Link to={viewhref} style={{display: 'block', width: '240px', height: '320px'}}>
             <Book key={kf.id} book={kf}/>
-          </a>
+            </Link>
         </div>
       )
     });
@@ -64,9 +65,6 @@ class Library extends React.Component {
                 <Tabs defaultActiveKey="1">
                   <TabPane tab={<span><Icon type="rocket" />最新</span>} key="1">
                     {kongfus}
-                  </TabPane>
-                  <TabPane tab={<span><Icon type="coffee" />最热</span>} key="2">
-                    Tab 2
                   </TabPane>
                 </Tabs>
 

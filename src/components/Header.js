@@ -1,12 +1,13 @@
 import React from 'react';
-import { Layout, Dropdown, Avatar, Icon, Menu } from 'antd';
-import { getUser} from "../services/users";
-import logo from '../assets/logo-min.png';
+import { Layout, Dropdown, Avatar, Icon, Menu, Popover } from 'antd';
+import { getUser } from "../services/users";
+import { Link } from 'react-router-dom';
+import './Header.css';
 
-const { Header } = Layout;
+const {Header} = Layout;
 
 const menu = (
-  <Menu style={{marginTop: '10px'}}>
+  <Menu>
     {/*<Menu.Item>*/}
     {/*<a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/"><Icon type="user"/> 个人信息</a>*/}
     {/*</Menu.Item>*/}
@@ -17,21 +18,49 @@ const menu = (
   </Menu>
 );
 
+const createMenu = (
+  <Menu>
+    <Menu.Item>
+      <Link to='/kongfu/create'><Icon type="plus" />创建新功夫</Link>
+    </Menu.Item>
+  </Menu>
+)
+
 class MyHeader extends React.Component {
   render() {
     return (
       <Header className='header' style={this.props.style}>
-        {this.props.children}
-        <span style={{color: '#fff', fontSize: '24px'}}>
-          <a href="/library" style={{color: '#fff'}}><img src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
-        </span>
+        {/*{this.props.children}*/}
+        <div className='logo' style={{color: '#fff', fontSize: '24px', float: 'left', marginRight: '30px'}}>
+          <a href="/library" style={{color: '#fff'}}><img
+            src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
+        </div>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['']}
+          style={{lineHeight: '64px', float: 'left'}}
+        >
+          <Menu.Item key="1"><Link to='/library'>功夫图书馆</Link></Menu.Item>
+          <Menu.Item key="2" disabled>
+            <Popover content='即将上线'>
+              编程擂台
+            </Popover>
+          </Menu.Item>
+        </Menu>
         <span style={{float: 'right'}}>
+
+          <Dropdown overlay={createMenu} style={{float: 'right'}}>
+            <Icon className='create-btn' type="plus-circle" style={{fontSize: 24, color: 'white', marginTop: '20px', marginRight: 30}}/>
+          </Dropdown>
           {/*<Dropdown overlay={menu}>*/}
-            <a className="ant-dropdown-link" href="/home">
-              <Avatar src={ getUser().avatarUrl}></Avatar>
-              <span style={{color: '#fff', padding: '0 15px'}}>{ getUser().name }</span>
-              {/*<Icon type="down" style={{color: '#fff'}}/>*/}
-            </a>
+          <div style={{float: 'right'}}>
+            <Link to='/home'>
+              <Avatar src={getUser().avatarUrl}></Avatar>
+              <span style={{color: '#fff', padding: '0 15px'}}>{getUser().name}</span>
+            {/*<Icon type="down" style={{color: '#fff'}}/>*/}
+            </Link>
+          </div>
           {/*</Dropdown>*/}
 
         </span>

@@ -20,7 +20,7 @@ export function getAllKongfu() {
 }
 
 export function getUserKongfu(uid) {
-  return request(API + '/' + uid + '/kongfu');
+  return request(API + '/users/' + uid + '/kongfu');
 }
 
 export function getKongfu(kongfu_id) {
@@ -28,12 +28,16 @@ export function getKongfu(kongfu_id) {
 }
 
 export function createTerminal(image) {
-  // return request('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/' + image + '/shell/application', {
-  //   headers: {
-  //     //'Content-Type': 'application/json'
-  //   }
-  // }, true)
-  return request(API + '/cloudware/startContainer?type=1&imageName=' + image)
+  return request(API + '/cloudware/startContainer', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      type: 1,
+      imageName: image
+    })
+  });
 }
 
 export function createCloudware(image) {
@@ -47,4 +51,8 @@ export function createCloudware(image) {
       imageName: image
     })
   });
+}
+
+export function getTags() {
+  return request(API + '/kongfu/taglist')
 }

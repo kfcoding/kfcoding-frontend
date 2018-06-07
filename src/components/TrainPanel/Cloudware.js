@@ -105,7 +105,8 @@ class Cloudware extends React.Component {
       wsaddr: this.props.ws,
       ws: null,
       windows: [],
-      active: false
+      active: false,
+      trycount: 0
     }
 
     this.container = React.createRef();
@@ -123,14 +124,19 @@ class Cloudware extends React.Component {
   handleClickOutside = evt => {
     this.state.active = true;
   };
-  componentDidMount() {
 
-    //document.addEventListener('mousedown', this.handleClickOutside);
-
+  _connect = () => {
     let self = this;
+
     let ws = new WebSocket(this.state.wsaddr);
     //ws.binaryType = 'arraybuffer';
     this.state.ws = ws;
+    ws.onerror = () => {
+      if (this.state.trycount < 10) {
+        setTimeout(this._connect, 5000)
+        this.state.trycount++;
+      }
+    }
 
     ws.onopen = function () {
       ws.send("ok");
@@ -292,6 +298,14 @@ class Cloudware extends React.Component {
           break;
       }
     }
+  }
+
+  componentDidMount() {
+
+    //document.addEventListener('mousedown', this.handleClickOutside);
+
+    this._connect();
+
   }
 
   _findWindow(wid) {

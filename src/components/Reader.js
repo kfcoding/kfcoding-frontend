@@ -173,8 +173,6 @@ class Reader extends React.Component {
       />
     ) : null;
 
-    let leftWidth = this.state.showLeft ? 250 : 0;
-
     let centerLayoutStyle = {
       background: '#f0f2f5',
       height: '100%',

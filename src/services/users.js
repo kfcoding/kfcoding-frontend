@@ -1,7 +1,10 @@
 import request from '../utils/request';
 import API from "../utils/api";
 
-export function getUser() {
+export function getUser(uid) {
+  if (uid) {
+    return request(API + '/users/' + uid);
+  }
   if (!localStorage.getItem('user')) {
     return {avatarUrl: null};
   }
