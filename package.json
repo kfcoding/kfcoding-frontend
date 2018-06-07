@@ -32,7 +32,10 @@
     "slate-react": "^0.12.6",
     "sockjs": "^0.3.19",
     "sockjs-client": "^1.1.5",
-    "xterm": "^3.4.1"
+    "xterm": "^3.4.1",
+    "rc-tween-one": "^1.7.2",
+    "rc-queue-anim": "^1.4.1",
+    "rc-scroll-anim": "^2.2.1"
   },
   "scripts": {
     "start": "react-app-rewired start",

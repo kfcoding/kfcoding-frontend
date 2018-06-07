@@ -9,6 +9,7 @@ import Signin from "./components/Signin";
 import Callback from "./components/Callback";
 import Home from "./components/Home";
 import Library from "./components/Library/index";
+import Index from './components/Index/index';
 
 class App extends Component {
   constructor() {
@@ -26,6 +27,7 @@ class App extends Component {
         <Route path='/auth/callback' component={Callback}/>
         <Route path='/home' component={Home}/>
         <Route path='/library' component={Library}/>
+        <Route path='/' component={Index}/>
       </div>
     );
   }
