@@ -39,13 +39,10 @@ export default class Page1 extends React.PureComponent {
     return (
       <div className="home-page-wrapper page3">
         <div className="indexPage" >
-          <h2>功夫秘籍</h2>
+          <h2><Link to='/library'>功夫秘籍</Link></h2>
         </div>
         <div style={{ marginLeft: '100px'}}>
             {kongfus}
-        </div>
-        <div style={{marginTop: '250px'}}>
-          <p><Link to='/library'>查看更多</Link></p>
         </div>
       </div>
     );
