@@ -8630,8 +8630,7 @@ footer h2,footer h2>span {
 }
 
 .banner .img-wrapper {
-	width: 46%;
-	max-width: 482px;
+	width: 50%;
 	position: absolute;
 	right: 0;
 	bottom: 26px
@@ -8697,7 +8696,7 @@ svg g {
 }
 
 .page1-block {
-	max-width: 160px;
+	max-width: 235px;
 	text-align: center;
 	margin: auto;
 	display: block;

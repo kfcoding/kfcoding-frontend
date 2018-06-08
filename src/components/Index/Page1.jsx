@@ -9,7 +9,8 @@ import './index-2.css';
 const page1Data = [
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/URIeCOKLMAbRXaeXoNqN.svg',
-    name: 'Git入门',
+    name: '探索与学习',
+    content:"最新的前沿IT技术 : 云计算、大数据、人工智能、机器学习、容器技术 ···",
     nameEn: 'Design Values',
     to: '/docs/spec/values',
     svgBg: (
@@ -33,7 +34,8 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/qXncdwwUTTgUFnsbCNCE.svg',
-    name: '云计算原理与实践',
+    name: '快速、独享',
+    content:"只需打开浏览器，各种实训环境秒级启动、随时可用、用完即走",
     nameEn: 'Visual',
     to: '/docs/spec/colors',
     svgBg: (
@@ -55,7 +57,8 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/YFXXZocxAgjReehpPNbX.svg',
-    name: '数据科学通识导论',
+    name: '灵活、方便',
+    content:"走到哪里都能继续完成实训任务,全天候随时随地访问实训环境",
     nameEn: 'Visualization',
     to: '/docs/spec/visual',
     svgBg: (
@@ -77,7 +80,8 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/VPuetGsvJuYBwoDkZWFW.svg',
-    name: '大数据原理与实践',
+    name: '黑客、达人',
+    content:"通过学习与实训，迅速达到较高的编程水平和计算机科学认知水平",
     nameEn: 'Animation',
     to: '/docs/spec/motion',
     svgBg: (
@@ -198,6 +202,8 @@ export default class Page1 extends React.PureComponent {
               <img src={item.img} alt="icon" />
             </div>
             <h3 >{item.name} </h3>
+            <br></br>
+            <p>{item.content}</p>
           </QueueAnim>
         </Col>
       );
@@ -205,7 +211,7 @@ export default class Page1 extends React.PureComponent {
     return (
       <div className="home-page-wrapper page1">
         <div className="indexPage" >
-          <h2>课程</h2>
+          <h2>特点</h2>
           <ScrollOverPack playScale="0.3">
             <QueueAnim
               component={Row}
