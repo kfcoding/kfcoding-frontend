@@ -117,7 +117,8 @@ class Cloudware extends React.Component {
       windows: [],
       active: false,
       trycount: 0,
-      intervalP: null
+      intervalP: null,
+      wsinterval: null
     }
 
     this.container = React.createRef();
@@ -149,10 +150,16 @@ class Cloudware extends React.Component {
         })
       })
     }, 20000)
+    this.state.wsinterval = setInterval(() => {
+      if (this.state.ws.readyState == 1) {
+        this.state.ws.send("");
+      }
+    }, 5000);
   }
 
   componentWillUnmount() {
     clearInterval(this.state.intervalP);
+    clearInterval(this.state.wsinterval);
   }
 
   _connect = () => {
