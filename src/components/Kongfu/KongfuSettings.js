@@ -203,7 +203,7 @@ class KongfuSettings extends React.Component {
                 <Form.Item
                   label='是否发布'
                 >
-                  <Switch checked={this.state.kongfu.status == 'public'} onChange={this.onChangePublish} />,
+                  <Switch checked={this.state.kongfu.status == 'public'} onChange={this.onChangePublish} />
                 </Form.Item>
                 <Form.Item>
                   <Button type="primary" onClick={this.done} disabled={!valid}><Icon type="check" />完成</Button>
