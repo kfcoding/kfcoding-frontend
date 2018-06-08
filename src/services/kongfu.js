@@ -56,3 +56,17 @@ export function createCloudware(image) {
 export function getTags() {
   return request(API + '/kongfu/taglist')
 }
+
+export function getKongfuByTag(tag) {
+  return request(API + '/kongfu/findByTag?tag=' + tag)
+}
+
+export function updateKongfu(kongfu) {
+  return request(API + '/kongfu/' + kongfu.id, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify(kongfu)
+  })
+}

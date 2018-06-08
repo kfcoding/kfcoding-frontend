@@ -35,7 +35,7 @@ class App extends Component {
           <Route path='/library' component={Library}/>
           <Route path='/kongfu/create' exact component={CreateKongfu}/>
           <Route path='/kongfu/:kongfu_id' exact component={props => <Kongfu {...props}/>}/>
-          <Route path='/kongfu/:kongfu_id/settings' component={KongfuSettings}/>
+          <Route path='/kongfu/:kongfu_id/settings' component={props => <KongfuSettings {...props}/>}/>
           <Route path='/users/:user_id' exact component={props => <UserProfile {...props}/>}/>
         </Switch>
       </div>

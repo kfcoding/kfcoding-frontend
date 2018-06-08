@@ -22,7 +22,7 @@ class Home extends React.Component {
 
   componentWillMount() {
     getMyKongfu().then(res => {
-      this.setState({kongfus: res.data.result.courses})
+      this.setState({kongfus: res.data.result.kongfuList})
     })
   }
 
@@ -47,7 +47,7 @@ class Home extends React.Component {
       console.log('Received values of form: ', values);
       createKongfu(values).then(res => {
         getMyKongfu().then(res => {
-          this.setState({kongfus: res.data.result.courses})
+          this.setState({kongfus: res.data.result.kongfuList})
           this.setState({visible: false})
         })
       })

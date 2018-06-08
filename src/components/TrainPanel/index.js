@@ -30,8 +30,8 @@ class TrainPanel extends React.Component {
       createCloudware(type).then(res => {
         console.log(res)
         panes.push({
-          title: type + '-' + idx,
-          content: <Cloudware ws={'ws://' + res.data.result.webSocketAddress}/>,
+          title: 'Rstudio-' + idx,
+          content: <Cloudware ws={'ws://' + res.data.result.webSocketAddress} pod={res.data.result.podResult.metadata.name}/>,
           key: idx + ''
         })
         this.setState({panes, activeKey})

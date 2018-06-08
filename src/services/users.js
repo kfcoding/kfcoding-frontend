@@ -24,7 +24,7 @@ export function getToken(code) {
 }
 
 export function getMyKongfu() {
-  return request(API + '/users/' + localStorage.getItem('uid') + '/kongfu', {
+  return request(API + '/users/current/kongfu', {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem('token')
     }

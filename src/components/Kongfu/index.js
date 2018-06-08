@@ -45,18 +45,13 @@ class Kongfu extends React.Component {
     return (
       <Layout>
         <MyHeader/>
-        <Content style={{ padding: '50px' }}>
+        <Content style={{ padding: '50px', minHeight: '680px' }}>
           <Layout>
             <Sider width={270} style={{ background: '#f0f2f5' }}>
               <div style={{overflow: 'visible', padding: '0 0 30px 0'}}>
                 <a href='#' style={{display: 'block'}}>
                 <Book book={this.state.kongfu}/>
                 </a>
-                <div style={{paddingTop: '30px', textAlign: 'center'}}>
-                  <ButtonGroup>
-                    <Button type="primary" icon="eye" href={'/reader/' + this.state.kongfu.id}>阅读</Button>
-                  </ButtonGroup>
-                </div>
               </div>
             </Sider>
             <Content>
@@ -64,6 +59,13 @@ class Kongfu extends React.Component {
                 <Col span={18}>
                   <Card title={this.state.kongfu.title}>
                     <p>{this.state.kongfu.brief}</p>
+                    <div style={{paddingTop: '30px'}}>
+                      <ButtonGroup>
+                        <Link to={'/reader/' + this.state.kongfu.id}>
+                        <Button type="primary" icon="eye">开始阅读</Button>
+                        </Link>
+                      </ButtonGroup>
+                    </div>
                   </Card>
                 </Col>
                 <Col span={6}>

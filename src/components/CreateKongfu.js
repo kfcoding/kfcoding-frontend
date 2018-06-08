@@ -73,7 +73,6 @@ class CreateKongfu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      defaultTags: ['云计算', '大数据'],
       tags: [],
 
       fields: {

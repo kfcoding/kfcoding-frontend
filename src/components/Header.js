@@ -32,8 +32,8 @@ class MyHeader extends React.Component {
       <Header className='header' style={this.props.style}>
         {/*{this.props.children}*/}
         <div className='logo' style={{color: '#fff', fontSize: '24px', float: 'left', marginRight: '30px'}}>
-          <a href="/library" style={{color: '#fff'}}><img
-            src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
+          <Link to="/library" style={{color: '#fff'}}><img
+            src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</Link>
         </div>
         <Menu
           theme="dark"
