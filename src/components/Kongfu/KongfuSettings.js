@@ -139,7 +139,15 @@ class KongfuSettings extends React.Component {
     };
     updateKongfu(data).then(res => {
       if (!res.err) {
-        window.location.href = '/home';
+        message.success('保存成功');
+        getKongfu(this.state.kongfu_id).then(res => {console.log('ok',res.data.result.kongfu.tags);
+          this.setState({kongfu: res.data.result.kongfu});
+          this.setState({fields: {
+            title: {value: res.data.result.kongfu.title},
+            brief: {value: res.data.result.kongfu.brief},
+            tags: res.data.result.kongfu.tags
+          }});
+        })
       }
     })
   };
