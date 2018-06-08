@@ -1,7 +1,10 @@
 import request from '../utils/request';
 import API from "../utils/api";
 
-export function getUser() {
+export function getUser(uid) {
+  if (uid) {
+    return request(API + '/users/' + uid);
+  }
   if (!localStorage.getItem('user')) {
     return {avatarUrl: null};
   }
@@ -21,7 +24,7 @@ export function getToken(code) {
 }
 
 export function getMyKongfu() {
-  return request(API + '/users/' + localStorage.getItem('uid') + '/kongfu', {
+  return request(API + '/users/current/kongfu', {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem('token')
     }

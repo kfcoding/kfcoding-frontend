@@ -7023,7 +7023,7 @@ rc-progress@~2.2.2:
     babel-runtime "6.x"
     prop-types "^15.5.8"
 
-rc-queue-anim@^1.4.1:
+rc-queue-anim@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/rc-queue-anim/-/rc-queue-anim-1.6.0.tgz#f73bea729c26e5772f20ccba04b0dc83e290c888"
   dependencies:

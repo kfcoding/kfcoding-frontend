@@ -1,6 +1,7 @@
 import React from 'react';
 import Window from './Window';
 import onClickOutside from "react-onclickoutside";
+import API from '../../utils/api';
 
 function mapKey(keyCode) {
   var xkm = [[65406, 0, 65406, 0, 0, 0, 0], [65307, 0, 65307, 0, 0, 0, 0], [49, 33, 49, 33, 0, 0, 0], [50, 64, 50, 64, 0, 0, 0], [51, 35, 51, 35, 0, 0, 0], [52, 36, 52, 36, 0, 0, 0],
@@ -98,6 +99,15 @@ function mapKey(keyCode) {
   return key;
 }
 
+function getElementOffset(el) {
+  const rect = el.getBoundingClientRect();
+
+  return {
+    top: rect.top + window.pageYOffset,
+    left: rect.left + window.pageXOffset,
+  };
+}
+
 class Cloudware extends React.Component {
   constructor(props) {
     super(props);
@@ -105,10 +115,13 @@ class Cloudware extends React.Component {
       wsaddr: this.props.ws,
       ws: null,
       windows: [],
-      active: false
+      active: false,
+      trycount: 0,
+      intervalP: null
     }
 
     this.container = React.createRef();
+    this._keep();
   }
 
   // handleClickOutside = (event) => {
@@ -121,23 +134,46 @@ class Cloudware extends React.Component {
   //   document.removeEventListener('mousedown', this.handleClickOutside);
   // }
   handleClickOutside = evt => {
-    this.state.active = true;
+    this.state.active = false;
   };
-  componentDidMount() {
 
-    //document.addEventListener('mousedown', this.handleClickOutside);
+  _keep = () => {
+    this.state.intervalP = setInterval(() => {
+      fetch(API + '/cloudware/keepalive', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          Pod: this.props.pod
+        })
+      })
+    }, 20000)
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.state.intervalP);
+  }
+
+  _connect = () => {
     let self = this;
+
     let ws = new WebSocket(this.state.wsaddr);
-    //ws.binaryType = 'arraybuffer';
+    ws.binaryType = 'arraybuffer';
     this.state.ws = ws;
+    ws.onerror = () => {
+      if (this.state.trycount < 10) {
+        setTimeout(this._connect, 3000)
+        this.state.trycount++;
+      }
+    };
 
     ws.onopen = function () {
-      ws.send("ok");
       var container = self.container.current;
       container.onmousemove = function (e) {
-        var dom_left = container.offsetLeft + container.offsetParent.offsetLeft;
-        var dom_top = container.offsetTop + container.offsetParent.offsetTop;
+        var pos = getElementOffset(container);
+        var dom_left = pos.left;
+        var dom_top = pos.top;
 
         var bei = 1;
         var x = Math.floor((e.pageX - dom_left) / bei);
@@ -147,6 +183,7 @@ class Cloudware extends React.Component {
         dv.setUint8(0, 7);
         dv.setUint16(1, x, true);
         dv.setUint16(3, y, true);
+        console.log(x, y);
         if (ws.readyState == 1)
           ws.send(buf);
       };
@@ -292,6 +329,14 @@ class Cloudware extends React.Component {
           break;
       }
     }
+  }
+
+  componentDidMount() {
+
+    //document.addEventListener('mousedown', this.handleClickOutside);
+
+    this._connect();
+
   }
 
   _findWindow(wid) {
