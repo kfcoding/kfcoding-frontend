@@ -4,7 +4,8 @@ import QueueAnim from 'rc-queue-anim';
 import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 
 import svgBgToParallax from './util';
-
+import './index-1.css';
+import './index-2.css';
 const page2Data = [
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/eYNnmGagLWdrkdMHVUuA.svg',
@@ -107,7 +108,7 @@ export default function Page2({ isMobile}) {
   return (
     <div className="home-page-wrapper page2" id="page2">
       <div className="indexPage" >
-        <h2>界面设计</h2>
+        <h2>交互式界面设计</h2>
         <ScrollOverPack component={Row} className="page2-content" playScale="0.4">
           <QueueAnim
             component={Col}

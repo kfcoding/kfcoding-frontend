@@ -1,8 +1,12 @@
 import React from 'react';
+import { Button } from 'antd';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import BannerImage from './BannerImage';
+import { currentUser } from "../../services/users";
+import { openWindow } from "../../utils/openWindow";
+import pic from '../../assets/pic.png';
 
 const loop = {
   duration: 3000,
@@ -11,6 +15,24 @@ const loop = {
 };
 
 class Banner extends React.PureComponent {
+  login = () => {
+  openWindow(
+    'https://github.com/login/oauth/authorize?client_id=1eb243e826a117b3e138&',
+    '登录',
+    600,
+    600
+  );
+  window.addEventListener('message', (m) => {
+    localStorage.setItem('token', m.data.token);
+    currentUser().then(res => {
+      console.log(res)
+      localStorage.setItem('uid', res.data.result.user.id);
+      localStorage.setItem('user', JSON.stringify(res.data.result.user));
+      window.location.replace('/home');
+
+    });
+  })
+}
   render() {
     const isZhCN = 'zh-CN';
     return (
@@ -40,17 +62,15 @@ class Banner extends React.PureComponent {
             KFCoding · 功夫编程
           </h1>
             <p key="p">
-              在浏览器中学习各种编程语言与开源技术，
-              各种实训环境触手可及、 随时可用、 秒级启动、 用完即走，教程内嵌代码一键执行，
-             打造新一代交互式开发者学习社区。
+             新一代交互式开发者学习社区
             </p>
             <div className="banner-btns" key="buttons">
-              <a href = "/"></a>
+              <Button type='primary' icon='github' size='large' onClick={this.login}>立即体验</Button>
             </div>
           </QueueAnim>
           {(
             <div className="img-wrapper" key="image">
-              <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
+              <img style={{width:'100%' , height:'100%'}} src={pic}/>
             </div>
           )}
         </QueueAnim>
