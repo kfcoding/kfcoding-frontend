@@ -72,9 +72,10 @@ class Kongfu extends React.Component {
 
                   <Card title="作者">
                     <Link to={'/users/' + this.state.author.id}>
-                      <Avatar src={this.state.author.avatarUrl} />
+                      <Avatar size='large' src={this.state.author.avatarUrl} />
                       <span style={{marginLeft: '20px'}}>{this.state.author.name}</span>
                     </Link>
+                    <div style={{marginTop: '30px', fontSize: '24px', textAlign: 'center'}}><a href={'https://github.com/' + this.state.author.name} style={{margin: '0 20px'}}><Icon type="github" /></a> <Icon type="weibo" style={{margin: '0 20px'}} /><Icon type="wechat" style={{margin: '0 20px'}} /></div>
                   </Card>
                 </Col>
               </Row>
