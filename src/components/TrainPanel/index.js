@@ -47,9 +47,11 @@ class TrainPanel extends React.Component {
         name = 'Nginx服务器'
       } else if (type == 'node') {
         name = 'Nodejs环境'
+      } else if (type == 'kfcoding.com/git:v1.0') {
+        name = 'Git'
       }
       panes.push({
-        title: type + '-' + idx,
+        title: name + '-' + idx,
         content: <Term ws={res.data.result.WsAddr} style={{height: '100%'}}/>,
         key: idx + ''
       })
@@ -92,6 +94,7 @@ class TrainPanel extends React.Component {
         </Menu.Item>
         <Menu.Item key="node">Nodejs环境</Menu.Item>
         <Menu.Item key="nginx">Nginx服务器</Menu.Item>
+        <Menu.Item key='kfcoding.com/git:v1.0'>Git环境</Menu.Item>
         <Menu.Item key='daocloud.io/shaoling/kfcoding-rstudio-latest:master'>Rstudio(GUI)</Menu.Item>
       </Menu>
     );
