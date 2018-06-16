@@ -51,8 +51,8 @@ class TrainPanel extends React.Component {
     createTerminal(type).then(res => {
       console.log(res);//return;
       let name = type;
-      if (type == 'busybox') {
-        name = 'Linux工具库';
+      if (type == 'ubuntu') {
+        name = 'Linux环境';
       } else if (type == 'nginx') {
         name = 'Nginx服务器'
       } else if (type == 'node') {
@@ -97,8 +97,9 @@ class TrainPanel extends React.Component {
     const menu = (
       <Menu onClick={this.onExtraClick}>
         <Menu.Item key='ide'>WebIDE</Menu.Item>
-        <Menu.Item key="busybox">
-          Linux工具库
+        <Menu.Divider />
+        <Menu.Item key="ubuntu">
+          Linux环境
         </Menu.Item>
         <Menu.Item key="python">
           Python环境
@@ -106,6 +107,7 @@ class TrainPanel extends React.Component {
         <Menu.Item key="node">Nodejs环境</Menu.Item>
         <Menu.Item key="nginx">Nginx服务器</Menu.Item>
         <Menu.Item key='kfcoding.com/git:v1.0'>Git环境</Menu.Item>
+        <Menu.Divider />
         <Menu.Item key='daocloud.io/shaoling/kfcoding-rstudio-latest:master'>Rstudio(GUI)</Menu.Item>
       </Menu>
     );
