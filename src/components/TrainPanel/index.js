@@ -4,9 +4,7 @@ import Term from '../Term';
 import { createTerminal, createCloudware } from "../../services/kongfu";
 import './style.css';
 import Cloudware from "./Cloudware";
-import AceEditor from 'react-ace';
-import 'brace/mode/python';
-import 'brace/theme/xcode';
+import Ide from './Ide';
 
 const TabPane = Tabs.TabPane;
 
@@ -32,26 +30,7 @@ class TrainPanel extends React.Component {
     if (type == 'ide') {
       panes.push({
         title: 'WebIDE-' + idx,
-        content: <AceEditor
-          mode="python"
-          theme="xcode"
-          fontSize={15}
-          name={idx + ''}
-          editorProps={{$blockScrolling: true}}
-          style={{width: '100%', height: '100%'}}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            tabSize: 2,
-          }}
-          value={`def print_welcome(name):
-  print("Welcome ", name)
-
-print_welcome("Kfcoding")
-`}
-        />,
+        content: <Ide/>,
         key: idx + ''
       })
       this.setState({panes, activeKey})
