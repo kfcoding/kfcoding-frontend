@@ -2,6 +2,7 @@ import React from 'react';
 import Window from './Window';
 import onClickOutside from "react-onclickoutside";
 import API from '../../utils/api';
+import { Spin } from 'antd';
 
 function mapKey(keyCode) {
   var xkm = [[65406, 0, 65406, 0, 0, 0, 0], [65307, 0, 65307, 0, 0, 0, 0], [49, 33, 49, 33, 0, 0, 0], [50, 64, 50, 64, 0, 0, 0], [51, 35, 51, 35, 0, 0, 0], [52, 36, 52, 36, 0, 0, 0],
@@ -118,7 +119,8 @@ class Cloudware extends React.Component {
       active: false,
       trycount: 0,
       intervalP: null,
-      wsinterval: null
+      wsinterval: null,
+      connectSuccess: false
     }
 
     this.container = React.createRef();
@@ -176,6 +178,7 @@ class Cloudware extends React.Component {
     };
 
     ws.onopen = function () {
+      self.setState({connectSuccess: true});
       var container = self.container.current;
       container.onmousemove = function (e) {
         var pos = getElementOffset(container);
@@ -360,6 +363,7 @@ class Cloudware extends React.Component {
   }
 
   render() {
+    let { connectSuccess } = this.state;
     var windows = this.state.windows.map(window => {
       return (
         <Window
@@ -370,9 +374,14 @@ class Cloudware extends React.Component {
     });
 
     return (
-      <div style={{position: 'relative'}} ref={this.container} onClick={this.onClick}>
-        {windows}
-      </div>
+      connectSuccess ?
+        <div style={{position: 'relative'}} ref={this.container} onClick={this.onClick}>
+          {windows}
+        </div>
+        :
+        <div style={{textAlign: 'center', paddingTop: '100px', color: '#fff'}}>
+          <Spin /> Loading...
+        </div>
     )
   }
 

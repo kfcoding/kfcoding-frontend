@@ -3,17 +3,18 @@ import { Terminal } from 'xterm';
 import SockJS from 'sockjs-client';
 import 'xterm/dist/xterm.css';
 import * as fit from 'xterm/lib/addons/fit/fit';
+import { Spin } from 'antd';
 
 class Term extends React.Component {
 
   constructor(props) {
     super(props);
-console.log(this.props.ws)
     Terminal.applyAddon(fit);
     this.state = {
       terminal: new Terminal(),
       wsaddr: this.props.ws,
-      ws: null
+      ws: null,
+      connectSuccess: false
     }
 
     this.termDom = React.createRef();

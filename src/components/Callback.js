@@ -1,5 +1,6 @@
 import React from 'react';
 import { getToken } from "../services/users";
+import { Spin } from 'antd';
 
 function getParameterByName(name, url) {
   if (!url) url = window.location.href;
@@ -28,8 +29,8 @@ class Callback extends React.Component {
 
   render() {
     return (
-      <div>
-
+      <div style={{textAlign: 'center', paddingTop: '100px'}}>
+        <Spin />正在努力加载...
       </div>
     );
   }

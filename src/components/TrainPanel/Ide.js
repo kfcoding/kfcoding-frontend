@@ -32,7 +32,7 @@ const themes = [
   'xcode',
   'textmate',
   'solarized_dark',
-  'solarized_light',
+  // 'solarized_light',
   'terminal',
 ]
 
