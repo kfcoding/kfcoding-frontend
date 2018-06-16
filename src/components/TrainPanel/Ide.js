@@ -61,7 +61,7 @@ class Ide extends React.Component {
 
   render() {
     return (
-      <div style={{height: '100%'}}>
+      <div style={{height: '100%', overflow: 'hidden'}}>
         <div style={{padding: '5px', background: '#fff'}}>
           <span style={{marginRight: '10px'}}>语言：<Select defaultValue="python" style={{ width: 120 }} onChange={this.changeMode}>
           {languages.map(lang => {
@@ -81,7 +81,7 @@ class Ide extends React.Component {
           fontSize={15}
           name={new Date().getTime() + ''}
           editorProps={{$blockScrolling: true}}
-          style={{width: '100%', height: '100%'}}
+          style={{width: '100%', height: '90%'}}
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
