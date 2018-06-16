@@ -30,8 +30,8 @@ class MyHeader extends React.Component {
   render() {
     return (
       <Header className='header' style={this.props.style}>
-        {/*{this.props.children}*/}
-        <div className='logo' style={{color: '#fff', fontSize: '24px', float: 'left', marginRight: '30px'}}>
+        <div className='logo' style={{color: '#fff', fontSize: '24px', marginRight: '30px', float: 'left'}}>
+        {this.props.children}
           <Link to="/" style={{color: '#fff'}}><img
             src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</Link>
         </div>
@@ -39,7 +39,7 @@ class MyHeader extends React.Component {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['']}
-          style={{lineHeight: '64px', float: 'left'}}
+          style={{lineHeight: '64px'}}
         >
           <Menu.Item key="1"><Link to='/library'>功夫图书馆</Link></Menu.Item>
           <Menu.Item key="2" disabled>

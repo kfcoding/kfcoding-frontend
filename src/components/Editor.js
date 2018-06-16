@@ -54,6 +54,7 @@ class KongfuEditor extends React.Component {
     };
 
     this.saveTimer();
+    this.left = React.createRef();
   }
 
   componentWillUnmount() {
@@ -313,7 +314,13 @@ class KongfuEditor extends React.Component {
   }
 
   toggleLeft = () => {
-    this.setState({showLeft: !this.state.showLeft})
+    if (this.state.showLeft) {
+      this.left.current.parentNode.style.width = 0;
+      this.state.showLeft = false;
+    } else {
+      this.left.current.parentNode.style.width = '200px';
+      this.state.showLeft = true;
+    }
   }
 
   render() {
@@ -364,9 +371,10 @@ class KongfuEditor extends React.Component {
     return (
       <Layout style={{height: '100%'}}>
         <SplitPane split="vertical"
-                   defaultSize={250}
+                   defaultSize={200}
+                   minSize={0}
         >
-          <div>
+          <div ref={this.left}>
             <Sidebar
               width='100%'
               title={this.state.kongfu.title}
@@ -378,7 +386,7 @@ class KongfuEditor extends React.Component {
             <Layout style={centerLayoutStyle}>
 
               <MyHeader style={{width: '100%', paddingLeft: 20, paddingRight: 20}}>
-                <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+                <Icon style={{}} onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer', fontSize: '16px'}} type="menu-fold" />
               </MyHeader>
               <Content>
                 <SplitPane defaultSize='65%'>

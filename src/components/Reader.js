@@ -29,6 +29,7 @@ class Reader extends React.Component {
     };
 
 
+    this.left = React.createRef();
 
   }
 
@@ -152,7 +153,13 @@ class Reader extends React.Component {
   }
 
   toggleLeft = () => {
-    this.setState({showLeft: !this.state.showLeft})
+    if (this.state.showLeft) {
+      this.left.current.parentNode.style.width = 0;
+      this.state.showLeft = false;
+    } else {
+      this.left.current.parentNode.style.width = '200px';
+      this.state.showLeft = true;
+    }
   }
 
   render() {
@@ -182,10 +189,11 @@ class Reader extends React.Component {
 
     return (
       <Layout style={{height: '100%'}}>
-        <SplitPane split="vertical" minSize={60}
-                   defaultSize={ 250 }
+        <SplitPane split="vertical"
+                   defaultSize={200}
+                   minSize={0}
         >
-          <div>
+          <div ref={this.left}>
             <Sidebar
               width='100%'
               title={this.state.kongfu.title}
@@ -198,7 +206,7 @@ class Reader extends React.Component {
             <Layout style={centerLayoutStyle}>
 
               <MyHeader style={{width: '100%', paddingLeft: 20, paddingRight: 20}}>
-                <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer'}} type="menu-fold" />
+                <Icon style={{}} onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer', fontSize: '16px'}} type="menu-fold" />
               </MyHeader>
               <Content>
                 <SplitPane defaultSize='65%'>
