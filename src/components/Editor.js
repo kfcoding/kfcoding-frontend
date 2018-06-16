@@ -247,6 +247,9 @@ class KongfuEditor extends React.Component {
       }
     }
 
+    let onDragStart = (e) => {
+      console.log(e)
+    }
 
     let menu = (
       <Menu onClick={onDropClick}>
@@ -264,7 +267,7 @@ class KongfuEditor extends React.Component {
     );
 
     return (
-      <div key={page.file}>
+      <div key={page.file} draggable={true} onDragStart={onDragStart}>
         <div className='menu' style={style} onClick={this.onMenuClick.bind(this, page)}>
           {page == this.state.editTitlePage ?
             <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
