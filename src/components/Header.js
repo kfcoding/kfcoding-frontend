@@ -39,7 +39,7 @@ class MyHeader extends React.Component {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['']}
-          style={{lineHeight: '64px'}}
+          style={{lineHeight: '64px', float: 'left'}}
         >
           <Menu.Item key="1"><Link to='/library'>功夫图书馆</Link></Menu.Item>
           <Menu.Item key="2" disabled>
