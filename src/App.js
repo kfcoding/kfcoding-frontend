@@ -15,6 +15,7 @@ import KongfuSettings from "./components/Kongfu/KongfuSettings";
 import Kongfu from "./components/Kongfu/index";
 import UserProfile from "./components/UserProfile";
 import Index from './components/Index/index';
+import UserSetting from './components/UserSetting';
 
 class App extends Component {
   constructor() {
@@ -37,6 +38,7 @@ class App extends Component {
           <Route path='/kongfu/:kongfu_id' exact component={props => <Kongfu {...props}/>}/>
           <Route path='/kongfu/:kongfu_id/settings' component={props => <KongfuSettings {...props}/>}/>
           <Route path='/users/:user_id' exact component={props => <UserProfile {...props}/>}/>
+          <Route path='/abc/setting' exact component={UserSetting}/>
         </Switch>
       </div>
     );

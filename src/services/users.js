@@ -30,3 +30,14 @@ export function getMyKongfu() {
     }
   });
 }
+
+export function UpdateUser(user) {
+    return request(API + '/users/update', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(user)
+    });
+    
+}
