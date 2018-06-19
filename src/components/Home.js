@@ -1,23 +1,53 @@
 import React from 'react';
 import styles from './Library.css';
-import { Layout, Divider, Button, Menu, Icon } from 'antd';
+import {message, Modal, Layout, Divider, Button, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import Book from "../components/Book";
 import { getMyKongfu } from "../services/users";
-import { createKongfu } from "../services/kongfu";
+import { createKongfu, deleteKongfu } from "../services/kongfu";
 import MyHeader from "./Header";
 import MyFooter from "./Footer";
 
 const { Content, Sider } = Layout;
 const ButtonGroup = Button.Group;
 const { SubMenu } = Menu;
+const confirm = Modal.confirm;
 
 class Home extends React.Component {
+
   state = {
     loading: false,
     visible: false,
     kongfus: [],
-    isRefresh: false
+    isRefresh: false,
+    deleteVisible: false,
+  }
+
+
+  showDeleteConfirm(id) {
+      console.log(this.state);
+      const self = this;
+      confirm({
+          title: '确定删除该功夫？',
+          content: '',
+          okText: '确定',
+          okType: 'danger',
+          cancelText: '取消',
+          onOk() {
+            deleteKongfu(id).then(res => {
+              if (res.data.code == 200){
+                message.success("删除成功");
+                // 重新加载
+                getMyKongfu().then(res => {
+                    self.setState({kongfus: res.data.result.kongfuList})
+                })
+              }
+            })
+          },
+          onCancel() {
+              console.log('Cancel');
+          },
+      });
   }
 
   componentWillMount() {
@@ -31,6 +61,8 @@ class Home extends React.Component {
       visible: true,
     });
   }
+
+
 
   handleCancel = () => {
     this.setState({visible: false});
@@ -51,7 +83,7 @@ class Home extends React.Component {
           this.setState({visible: false})
         })
       })
-    })
+    }).bind(this)
   }
 
   saveFormRef = (formRef) => {
@@ -65,9 +97,10 @@ class Home extends React.Component {
       let viewhref = '/reader/' + kf.id;
       let edithref = '/editor/' + kf.id;
       let settinghref = '/kongfu/' + kf.id + '/settings';
+      let deletehref = '/kongfu/delete/' + kf.id;
       return (
         <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
-          <a href='#' style={{display: 'block', width: '240px', height: '320px'}}>
+          <a href='#' style={{display: 'block', width: '240px', height: '320px', marginLeft: '40px'}}>
             <Book key={kf.id} book={kf}/>
           </a>
           <div style={{paddingTop: '30px', textAlign: 'center'}}>
@@ -75,6 +108,9 @@ class Home extends React.Component {
               <Button type="primary" icon="eye" href={viewhref}>阅读</Button>
               <Button type="primary" icon="edit" href={edithref}>编辑</Button>
               <Button type="primary" icon="setting" href={settinghref}>设置</Button>
+              <Button onClick={()=>this.showDeleteConfirm(kf.id)} type="primary" icon="delete">
+                  删除
+              </Button>
             </ButtonGroup>
           </div>
         </div>
@@ -106,7 +142,7 @@ class Home extends React.Component {
                 <Divider orientation="left" style={{fontSize: '28px'}}>藏经阁</Divider>
                 {kongfus}
                 <Link to='/kongfu/create'>
-                  <div className='container'>
+                  <div className='container' >
                     <div className='book'>
                       <div className='front'>
                         <div className='addCover' style={{backgroundColor: '#525485'}}>

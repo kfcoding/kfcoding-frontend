@@ -70,3 +70,7 @@ export function updateKongfu(kongfu) {
     body: JSON.stringify(kongfu)
   })
 }
+
+export function deleteKongfu(id) {
+    return request(API + '/kongfu/delete?id=' + id)
+}
