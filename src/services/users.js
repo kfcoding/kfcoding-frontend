@@ -32,7 +32,7 @@ export function getMyKongfu() {
 }
 
 export function UpdateUser(user) {
-    return request(API + '/users/update', {
+    return request(API + '/users/current', {
         headers: {
             'Content-Type': 'application/json'
         },
