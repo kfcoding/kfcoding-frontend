@@ -5,6 +5,7 @@ import { createTerminal, createCloudware } from "../../services/kongfu";
 import './style.css';
 import Cloudware from "./Cloudware";
 import Ide from './Ide';
+import Test from "../Test";
 
 const TabPane = Tabs.TabPane;
 
@@ -15,8 +16,10 @@ class TrainPanel extends React.Component {
     this.state = {
       panes: [],
       terminalIdx: 1,
-      activeKey: '1',
+      activeKey: '1'
     }
+
+    this.terms = {}
   }
 
   onEdit = (targetKey, action) => {
@@ -62,12 +65,20 @@ class TrainPanel extends React.Component {
       }
       panes.push({
         title: name + '-' + idx,
-        content: <Term ws={res.data.result.WsAddr} style={{height: '100%'}}/>,
+        content: <Term ref={el => this.terms[activeKey] = el} ws={res.data.result.WsAddr} style={{height: '100%'}}/>,
         key: idx + ''
       })
       this.setState({panes, activeKey})
     })
 
+  }
+
+  fly(v) {
+    console.log(v)
+    if (v) {
+      if (this.terms[this.state.activeKey] && this.terms[this.state.activeKey].pasteCode)
+        this.terms[this.state.activeKey].pasteCode(v);
+    }
   }
 
   remove = (targetKey) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Icon } from 'antd';
+import { Layout, Icon, Rate, Steps } from 'antd';
 //import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import './Editor.css';
@@ -13,6 +13,7 @@ import SplitPane from 'react-split-pane';
 import Kfeditor from '@kfcoding/kfeditor';
 
 const {Content} = Layout;
+const Step = Steps.Step;
 
 class Reader extends React.Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class Reader extends React.Component {
       currentValue: null,
       meta: null,
       prefix: 'http://oss.book.kfcoding.com/' + this.props.match.params.kongfu_id,
-      showLeft: true
+      showLeft: true,
+      codeFly: ""
     };
 
 
@@ -147,6 +149,18 @@ class Reader extends React.Component {
     }
   }
 
+  getNextPage = () => {
+    let parent = this._findParent(this.state.meta, this.state.currentPage);
+    let currentIdx = 0;
+    for (let i in parent.pages) {
+      if (parent.pages[i] == this.state.currentPage) {
+        currentIdx = i;
+        break;
+      }
+    }
+
+  }
+
   render() {
     const {meta} = this.state;
     if (!meta) return null;
@@ -155,13 +169,24 @@ class Reader extends React.Component {
       return this.getPageList(p)
     })
 
+    let cbc = {
+      fly: (v) => {
+        let str = "";
+        v.map(itr => {
+          str += itr.props.node.text + '\n'
+        });
+        this.trainPanel.fly(str)
+      }
+    }
+
     let editor = this.state.currentPage ? (
       <Kfeditor
         className='markdown-body'
         value={this.state.currentValue}
-        style={{minHeight: '100%'}}
+        style={{minHeight: '100%', width: '100%'}}
         onChange={this.onChange}
         readOnly={true}
+        codeBlockConfig={cbc}
       />
     ) : null;
 
@@ -199,10 +224,17 @@ class Reader extends React.Component {
                     <div
                       style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative', background: '#fff'}}>
                       {editor}
+                      <div style={{textAlign: 'right', paddingRight: '40px'}}>
+                        评分：<Rate/>
+                      </div>
+                      {/*<Steps current={1}>*/}
+                        {/*<Step title="Finished" description="This is a description." />*/}
+                        {/*<Step title="Waiting" description="This is a description." />*/}
+                      {/*</Steps>*/}
                     </div>
                   </div>
                   <div>
-                    <TrainPanel/>
+                    <TrainPanel ref={el => this.trainPanel = el}/>
                   </div>
                 </SplitPane>
 

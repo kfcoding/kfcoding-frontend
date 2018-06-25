@@ -305,9 +305,9 @@
     react-loading-image "^0.4.0"
     styled-components "^3.2.0"
 
-"@kfcoding/kfeditor@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@kfcoding/kfeditor/-/kfeditor-0.0.12.tgz#e4ddb560dad605ea2d5463169d29b901715572a3"
+"@kfcoding/kfeditor@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@kfcoding/kfeditor/-/kfeditor-0.0.14.tgz#fb9654c8501f9e100bdf321c60977fa788ad372f"
   dependencies:
     "@canner/slate-constant" "^1.0.9"
     "@canner/slate-icon-blockquote" "^1.2.9"

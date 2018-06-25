@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
-    "@kfcoding/kfeditor": "^0.0.12",
+    "@kfcoding/kfeditor": "^0.0.14",
     "@kfcoding/slate-icon-image": "^1.2.10",
     "ali-oss": "^5.2.0",
     "antd": "^3.6.0",

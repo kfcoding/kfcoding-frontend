@@ -1,5 +1,4 @@
 import React from 'react';
-import Kfeditor from 'kfeditor';
 import { Value } from 'slate';
 
 const initialValue = ({
@@ -29,6 +28,10 @@ class Test extends React.Component {
     this.setState({value})
   }
 
+  componentWillReceiveProps(next) {
+    console.log(next)
+  }
+
   render () {
     return (
       <div style={{
@@ -39,7 +42,6 @@ class Test extends React.Component {
         position: 'relative',
         zIndex: 0
       }}>
-        <Kfeditor value={this.state.value} onChange={this.onChange}/>
       </div>
     );
   }

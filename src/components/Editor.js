@@ -50,7 +50,8 @@ class KongfuEditor extends React.Component {
       kongfu: {
         title: ''
       },
-      showLeft: true
+      showLeft: true,
+      codeFly: ''
     };
 
     this.saveTimer();
@@ -355,6 +356,16 @@ class KongfuEditor extends React.Component {
       }
     };
 
+    let cbc = {
+      fly: (v) => {
+        let str = "";
+        v.map(itr => {
+          str += itr.props.node.text + '\n'
+        });
+        this.trainPanel.fly(str)
+      }
+    }
+
     let editor = this.state.currentPage ? (
       <Kfeditor
         value={this.state.currentValue}
@@ -362,6 +373,7 @@ class KongfuEditor extends React.Component {
         style={{minHeight: '100%', background: '#fff', width: '100%'}}
         placeholder='请开始你的表演！'
         imageOptions={serviceConfig}
+        codeBlockConfig={cbc}
       />
     ) : null;
 
@@ -400,7 +412,7 @@ class KongfuEditor extends React.Component {
                     </div>
                   </div>
                   <div>
-                    <TrainPanel/>
+                    <TrainPanel ref={el => this.trainPanel = el} codeFly={this.state.codeFly}/>
                   </div>
                 </SplitPane>
 
