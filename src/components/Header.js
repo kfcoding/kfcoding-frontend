@@ -27,6 +27,10 @@ const createMenu = (
 )
 
 class MyHeader extends React.Component {
+  constructor() {
+    super()
+  }
+
   render() {
     return (
       <Header className='header' style={this.props.style}>

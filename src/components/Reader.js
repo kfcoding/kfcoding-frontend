@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Icon } from 'antd';
-import CannerEditor from 'kfeditor-slate';
+//import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import './Editor.css';
 import MyHeader from './Header';
@@ -10,6 +10,7 @@ import request from "../utils/request";
 import { getKongfu } from "../services/kongfu";
 import Sidebar from "./Sidebar/index";
 import SplitPane from 'react-split-pane';
+import Kfeditor from '@kfcoding/kfeditor';
 
 const {Content} = Layout;
 
@@ -53,22 +54,6 @@ class Reader extends React.Component {
     getKongfu(this.state.kongfu_id).then(res => {
       this.setState({kongfu: res.data.result.kongfu})
     })
-
-    let idx = this.state.terminalIdx++;
-    // fetch('http://terminal.wss.kfcoding.com/api/v1/pod/kfcoding-alpha/terminal-' + idx + '/shell/application').then(res => {
-    //   console.log(res);//return;
-    //   res.text().then(res => {console.log(res)
-    //     setTimeout(() => {
-    //       this.state.panes.push({
-    //         title: 'Terminal ' + idx,
-    //         content: <Term ws={res}/>,
-    //         key: idx + ''
-    //       })
-    //       this.setState({panes: this.state.panes})
-    //     }, 1000)
-    //   })
-    //
-    // })
 
   }
 
@@ -171,8 +156,8 @@ class Reader extends React.Component {
     })
 
     let editor = this.state.currentPage ? (
-      <CannerEditor
-        className='editor'
+      <Kfeditor
+        className='markdown-body'
         value={this.state.currentValue}
         style={{minHeight: '100%'}}
         onChange={this.onChange}
@@ -181,7 +166,7 @@ class Reader extends React.Component {
     ) : null;
 
     let centerLayoutStyle = {
-      background: '#f0f2f5',
+      background: '#fff',
       height: '100%',
       overflow: 'hidden'
     }
@@ -212,7 +197,7 @@ class Reader extends React.Component {
                 <SplitPane defaultSize='65%'>
                   <div>
                     <div
-                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
+                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative', background: '#fff'}}>
                       {editor}
                     </div>
                   </div>

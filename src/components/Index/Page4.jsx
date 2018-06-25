@@ -1,7 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'antd';
-import TweenOne from 'rc-tween-one';
-import QueueAnim from 'rc-queue-anim';
 import { getAllKongfu } from "../../services/kongfu";
 import { Link } from 'react-router-dom';
 import Book from "../Book";

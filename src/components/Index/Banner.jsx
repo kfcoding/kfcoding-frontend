@@ -3,7 +3,6 @@ import { Button } from 'antd';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import BannerImage from './BannerImage';
 import { currentUser } from "../../services/users";
 import { openWindow } from "../../utils/openWindow";
 import pic from '../../assets/pic.png';

@@ -4,7 +4,6 @@ import svgBgToParallax from './util';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import BannerImage from './BannerImage';
 import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 const loop = {
   duration: 3000,
@@ -16,19 +15,19 @@ const page3Data = [
     title:"所见即所得内容制作",
     content: "支持Markdown，教程编写“所见即所得”，书写与阅读体验的极致体验。",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/qggKjIGNFlVmMpwDUXPU.svg',
-    to: '/docs/spec/download',
+    to: '/',
   },
   {
     title: "内嵌代码一键执行",
     content: "只需轻轻一点，教程中的代码块即可一键执行，超酷！",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/dgjVqwkJvptQEtlfctvk.svg',
-    link: 'http://library.ant.design/',
+    link: '/',
   },
   {
     title: "支持大型GUI计算软件",
     content: "秒级启动完全功能的Matlab等大型GUI计算软件",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/vUxYuDdsbBBcMDxSGmwc.svg',
-    link: 'http://kitchen.alipay.com/',
+    link: '/',
   }
 ];
 

@@ -166,7 +166,7 @@ class Home extends React.Component {
             </Content>
           </Layout>
         </Content>
-        <MyFooter/>
+        <MyFooter></MyFooter>
       </Layout>
     );
   }
