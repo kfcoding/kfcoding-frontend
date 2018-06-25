@@ -3,7 +3,6 @@ import { Select } from 'antd';
 import AceEditor from 'react-ace';
 
 const Option = Select.Option;
-
 const languages = [
   'javascript',
   'java',
@@ -26,18 +25,22 @@ const themes = [
 ]
 
 languages.forEach((lang) => {
-  require(`brace/mode/${lang}`)
-  require(`brace/snippets/${lang}`)
+  import (`brace/mode/${lang}`)
+  import (`brace/snippets/${lang}`)
 })
 
 themes.forEach((theme) => {
-  require(`brace/theme/${theme}`)
+  import (`brace/theme/${theme}`)
 })
 
 class Ide extends React.Component {
-  state = {
-    mode: 'python',
-    theme: 'monokai'
+  constructor() {
+
+    super();
+    this.state = {
+      mode: 'python',
+      theme: 'monokai'
+    }
   }
 
   changeMode = (value) => {

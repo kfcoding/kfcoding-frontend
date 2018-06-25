@@ -10,7 +10,7 @@ module.exports = function override(config, env) {
   //config = rewirePreact(config, env);
   config.plugins.push(
     new BabelEnginePlugin({
-      presets: ['env']
+      presets: ['env', 'react']
     })
   );
 
