@@ -16,6 +16,7 @@ import Kongfu from "./components/Kongfu/index";
 import UserProfile from "./components/UserProfile";
 import Index from './components/Index/index';
 import UserSetting from './components/UserSetting';
+// import Test from "./components/Test";
 
 class App extends Component {
   constructor() {
@@ -23,7 +24,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div style={{height: '100%'}}>
         <Switch>
@@ -39,6 +39,7 @@ class App extends Component {
           <Route path='/kongfu/:kongfu_id/settings' component={props => <KongfuSettings {...props}/>}/>
           <Route path='/users/setting' exact component={UserSetting}/>
           <Route path='/users/:user_id' exact component={props => <UserProfile {...props}/>}/>
+          {/*<Route path='/test' component={Test}/>*/}
         </Switch>
       </div>
     );
