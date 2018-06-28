@@ -1,11 +1,12 @@
 import React from 'react';
-import { Tabs, Icon, Menu, Dropdown } from 'antd';
+import { Tabs, Icon, Menu, Dropdown, Button } from 'antd';
 import Term from '../Term';
 import { createTerminal, createCloudware } from "../../services/kongfu";
 import './style.css';
 import Cloudware from "./Cloudware";
 import Ide from './Ide';
 import Test from "../Test";
+import Fullscreen from "react-full-screen";
 
 const TabPane = Tabs.TabPane;
 
@@ -16,7 +17,8 @@ class TrainPanel extends React.Component {
     this.state = {
       panes: [],
       terminalIdx: 1,
-      activeKey: '1'
+      activeKey: '1',
+      isFull: false,
     }
 
     this.terms = {}
@@ -104,6 +106,10 @@ class TrainPanel extends React.Component {
     this.add(key)
   }
 
+  goFull = () => {
+    this.setState({ isFull: true });
+  }
+
   render() {
     const menu = (
       <Menu onClick={this.onExtraClick}>
@@ -124,26 +130,37 @@ class TrainPanel extends React.Component {
     );
 
     let extra = (
-      <Dropdown overlay={menu} trigger={['click']}>
-        <a className="ant-dropdown-link" style={{fontSize: '20px', marginRight: 10}} href="#">
-          <Icon type="plus-square-o"/>
-        </a>
-      </Dropdown>
+      <div>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <a className="ant-dropdown-link" style={{fontSize: '20px', marginRight: 10}} href="#">
+            <Icon type="plus-square-o"/>
+          </a>
+        </Dropdown>
+        <Button onClick={this.goFull} size="small" shape="circle" ghost={true}>
+          <Icon type="arrows-alt"/> 
+        </Button>
+      </div>      
     )
     return (
       <div style={{background: '#000', height: 'calc(100vh - 64px)'}}>
-        <Tabs
-          hideAdd
-          onChange={this.onChangeTab}
-          activeKey={this.state.activeKey}
-          defaultActiveKey="1"
-          type="editable-card"
-          onEdit={this.onEdit}
-          tabBarExtraContent={extra}
-          style={{height: '100%'}}
+        <Fullscreen
+          enabled={this.state.isFull}
+          onChange={isFull => this.setState({isFull})}
         >
-          {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} style={{height: '100%'}}>{pane.content}</TabPane>)}
-        </Tabs>
+          <Tabs
+            hideAdd
+            onChange={this.onChangeTab}
+            activeKey={this.state.activeKey}
+            defaultActiveKey="1"
+            type="editable-card"
+            onEdit={this.onEdit}
+            tabBarExtraContent={extra}
+            style={{height: '100%'}}
+            className="full-screenable-node"
+          >
+            {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} style={{height: '100%'}}>{pane.content}</TabPane>)}
+          </Tabs>
+        </Fullscreen>
       </div>
     )
   }

@@ -28,7 +28,6 @@ class Banner extends React.PureComponent {
       localStorage.setItem('uid', res.data.result.user.id);
       localStorage.setItem('user', JSON.stringify(res.data.result.user));
       window.location.replace('/home');
-
     });
   })
 }

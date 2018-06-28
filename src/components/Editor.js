@@ -104,7 +104,6 @@ class KongfuEditor extends React.Component {
     setInterval(() => {
       this._saveCurrentPage()
     }, 5000)
-
   }
 
   _saveCurrentPage() {

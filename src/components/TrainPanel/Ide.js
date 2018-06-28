@@ -82,9 +82,8 @@ class Ide extends React.Component {
             tabSize: 2,
           }}
           value={`def print_welcome(name):
-    print("Welcome ", name)
-
-  print_welcome("Kfcoding")
+    print("Welcome to", name)
+print_welcome("Kfcoding")
   `}
         />
       </div>

@@ -9,7 +9,7 @@ const loop = {
   repeat: -1,
 };
 
-export default class Page1 extends React.PureComponent {
+export default class Page4 extends React.PureComponent {
   constructor() {
     super();
     this.state = {
