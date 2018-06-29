@@ -11,6 +11,7 @@ export function getUser(uid) {
   return JSON.parse(localStorage.getItem('user'))
 }
 
+// 返回当前用户信息
 export function currentUser() {
   return request(API + '/users/current', {
     headers: {
@@ -31,6 +32,7 @@ export function getMyKongfu() {
   });
 }
 
+// 修改用户信息
 export function UpdateUser(user) {
     return request(API + '/users/current', {
         headers: {

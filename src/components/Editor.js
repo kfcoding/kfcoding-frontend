@@ -2,13 +2,13 @@ import React from 'react';
 import { Layout, Menu, Dropdown, Icon, Popover, Select, Upload } from 'antd';
 import request from "../utils/request";
 import { getOssToken, getKongfu } from "../services/kongfu";
-import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import styles from './Editor.css';
 import MyHeader from './Header';
 import TrainPanel from "./TrainPanel/index";
 import Sidebar from "./Sidebar/index";
 import SplitPane from 'react-split-pane';
+import Kfeditor from '@kfcoding/kfeditor';
 
 const {Content} = Layout;
 
@@ -24,7 +24,7 @@ const initialValue = ({
           {
             object: 'text',
             leaves: [{
-              text: '请开始你的表演！'
+              text: ''
             }],
           },
         ],
@@ -50,7 +50,8 @@ class KongfuEditor extends React.Component {
       kongfu: {
         title: ''
       },
-      showLeft: true
+      showLeft: true,
+      codeFly: ''
     };
 
     this.saveTimer();
@@ -167,7 +168,11 @@ class KongfuEditor extends React.Component {
         return;
       }
       this.state.currentPage = page;
-      this.setState({currentValue: Value.fromJSON(res.data)});
+      if (res.data.document.nodes.length == 0) {
+        this.setState({currentValue: Value.fromJSON(initialValue)});
+      } else {
+        this.setState({currentValue: Value.fromJSON(res.data)});
+      }
     })
   }
 
@@ -178,6 +183,7 @@ class KongfuEditor extends React.Component {
     if (value.document != this.state.currentValue.document) {
       this.state.dirty = true;
     }
+    console.log(value.toJSON())
   }
 
   changeTitle(page, e) {
@@ -345,25 +351,34 @@ class KongfuEditor extends React.Component {
         });
         return true;
       },
-      action: 'https://kfcoding-test.oss-cn-shanghai.aliyuncs.com/pic.png',
       headers: {
-        //Authorization: 'OSS ' + this.state.sign,
         "X-Requested-With": null // https://github.com/react-component/upload/issues/33
       }
     };
 
+    let cbc = {
+      fly: (v) => {
+        let str = "";
+        v.map(itr => {
+          str += itr.props.node.text + '\n'
+        });
+        this.trainPanel.fly(str)
+      }
+    }
+
     let editor = this.state.currentPage ? (
-      <CannerEditor
+      <Kfeditor
         value={this.state.currentValue}
         onChange={this.onContentChange}
-        style={{minHeight: '100%'}}
+        style={{minHeight: '100%', background: '#fff', width: '100%'}}
         placeholder='请开始你的表演！'
-        serviceConfig={serviceConfig}
+        imageOptions={serviceConfig}
+        codeBlockConfig={cbc}
       />
     ) : null;
 
     let centerLayoutStyle = {
-      background: '#f0f2f5',
+      background: '#fff',
       height: '100%',
       overflow: 'hidden'
     }
@@ -386,18 +401,18 @@ class KongfuEditor extends React.Component {
             <Layout style={centerLayoutStyle}>
 
               <MyHeader style={{width: '100%', paddingLeft: 20, paddingRight: 20}}>
-                <Icon style={{}} onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer', fontSize: '16px'}} type="menu-fold" />
+                <Icon onClick={this.toggleLeft} style={{color: '#fff', cursor: 'pointer', fontSize: '16px'}} type="menu-fold" />
               </MyHeader>
               <Content>
                 <SplitPane defaultSize='65%'>
                   <div>
                     <div
-                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative'}}>
+                      style={{height: 'calc(100vh - 64px)', overflow: 'hidden', overflowY: 'scroll', position: 'relative', background: '#fff'}}>
                       {editor}
                     </div>
                   </div>
                   <div>
-                    <TrainPanel/>
+                    <TrainPanel ref={el => this.trainPanel = el} codeFly={this.state.codeFly}/>
                   </div>
                 </SplitPane>
 
@@ -405,9 +420,6 @@ class KongfuEditor extends React.Component {
             </Layout>
           </div>
         </SplitPane>
-        <div style={{position: 'fixed', display: 'none'}}>
-        <Popover/><Select/><Upload/>
-        </div>
       </Layout>
     );
   }

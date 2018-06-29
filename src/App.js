@@ -17,6 +17,7 @@ import UserProfile from "./components/UserProfile";
 import Index from './components/Index/index';
 import UserSetting from './components/UserSetting';
 import CreateWorkspace from "./components/CreateWorkspace";
+// import Test from "./components/Test";
 
 class App extends Component {
   constructor() {
@@ -24,7 +25,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div style={{height: '100%'}}>
         <Switch>
@@ -41,6 +41,7 @@ class App extends Component {
           <Route path='/users/setting' exact component={UserSetting}/>
           <Route path='/users/:user_id' exact component={props => <UserProfile {...props}/>}/>
           <Route path='/workspace/create' exact component={CreateWorkspace}/>
+          {/*<Route path='/test' component={Test}/>*/}
         </Switch>
       </div>
     );

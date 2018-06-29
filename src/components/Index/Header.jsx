@@ -1,8 +1,7 @@
 import React from 'react';
-import { Layout, Avatar, Icon, Menu,Card, Button } from 'antd';
+import { Layout, Button } from 'antd';
 import { currentUser } from "../../services/users";
 import { openWindow } from "../../utils/openWindow";
-import logo from '../../assets/logo-min.png';
 
 const { Header } = Layout;
 

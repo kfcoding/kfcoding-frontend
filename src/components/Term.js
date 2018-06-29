@@ -8,7 +8,7 @@ import { Spin } from 'antd';
 class Term extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props);console.log(props)
     Terminal.applyAddon(fit);
     this.state = {
       terminal: new Terminal(),
@@ -18,6 +18,12 @@ class Term extends React.Component {
     }
 
     this.termDom = React.createRef();
+  }
+
+  pasteCode = (v) => {
+    if (!this.ws || this.ws.readyState !== 1)
+      return;
+    this.ws.send(JSON.stringify({Op: 'stdin', Data: v}));
   }
 
   componentDidMount() {
