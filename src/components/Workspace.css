@@ -1,0 +1,47 @@
+.card{
+  height: 97px;
+  width: 116px;
+  background-color: white;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-radius: 3px;
+  border: 1px solid #dbd8d8;
+  border-width: 1px 1px 2px 1px;
+  box-shadow: 0 1px 0 #e7e7e7;
+  margin-right: 24px !important;
+  float: left;
+  cursor: pointer;
+}
+
+.cardInfo {
+  height: 97px;
+  width: 116px;
+  background-color: white;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-radius: 3px;
+  border: 1px solid #1d76ba;
+  border-width: 1px 1px 2px 1px;
+  margin-right: 24px !important;
+  float: left;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.cardItem{
+  height: 94px;
+  width: 114px;
+  padding: 12px;
+}
+
+.cardButton{
+  height: 45px;
+  width: 90px;
+  border: none;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 40%;
+  outline:none;
+}
+

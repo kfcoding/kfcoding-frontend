@@ -62,7 +62,7 @@ class Kongfu extends React.Component {
                     <div style={{paddingTop: '30px'}}>
                       <ButtonGroup>
                         <Link to={'/reader/' + this.state.kongfu.id}>
-                        <Button type="primary" icon="eye">开始阅读</Button>
+                          <Button type="primary" icon="eye">开始阅读</Button>
                         </Link>
                       </ButtonGroup>
                     </div>

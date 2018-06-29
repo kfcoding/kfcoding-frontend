@@ -16,6 +16,7 @@ import Kongfu from "./components/Kongfu/index";
 import UserProfile from "./components/UserProfile";
 import Index from './components/Index/index';
 import UserSetting from './components/UserSetting';
+import CreateWorkspace from "./components/CreateWorkspace";
 
 class App extends Component {
   constructor() {
@@ -39,6 +40,7 @@ class App extends Component {
           <Route path='/kongfu/:kongfu_id/settings' component={props => <KongfuSettings {...props}/>}/>
           <Route path='/users/setting' exact component={UserSetting}/>
           <Route path='/users/:user_id' exact component={props => <UserProfile {...props}/>}/>
+          <Route path='/workspace/create' exact component={CreateWorkspace}/>
         </Switch>
       </div>
     );
