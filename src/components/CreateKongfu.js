@@ -153,7 +153,7 @@ class CreateKongfu extends React.Component {
                 </div>
               </Form.Item>
               <Form.Item>
-              <Button type="primary" onClick={this.done} disabled={!valid}><Icon type="check" />完成</Button>
+                <Button type="primary" onClick={this.done} disabled={!valid}><Icon type="check" />完成</Button>
               </Form.Item>
 
             </div>
