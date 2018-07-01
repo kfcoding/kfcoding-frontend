@@ -172,7 +172,7 @@ class CreateWorkspace extends PureComponent {
     };
     createWorkSpace(data).then(res => {
       if (!res.err) {
-        window.location.href = 'localhost:3000/?id=' + res.data.result.workspace.id;
+        window.location.href = 'http://localhost:3000/?id=' + res.data.result.workspace.id;
       }
     })
   }
