@@ -136,9 +136,7 @@ class TrainPanel extends React.Component {
             <Icon type="plus-square-o"/>
           </a>
         </Dropdown>
-        <Button onClick={this.goFull} size="small" shape="circle" ghost={true}>
-          <Icon type="arrows-alt"/> 
-        </Button>
+        <Icon type="arrows-alt" onClick={this.goFull} size="small"/> 
       </div>      
     )
     return (
@@ -155,7 +153,7 @@ class TrainPanel extends React.Component {
             type="editable-card"
             onEdit={this.onEdit}
             tabBarExtraContent={extra}
-            style={{height: '100%'}}
+            style={{height: '100vh'}}
             className="full-screenable-node"
           >
             {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} style={{height: '100%'}}>{pane.content}</TabPane>)}
