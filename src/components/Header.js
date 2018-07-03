@@ -22,6 +22,8 @@ const createMenu = (
   <Menu>
     <Menu.Item>
       <Link to='/kongfu/create'><Icon type="plus" />创建新功夫</Link>
+    </Menu.Item>
+    <Menu.Item>
       <Link to='/workspace/create'><Icon type="plus"/>创建Workspace</Link>
     </Menu.Item>
   </Menu>
