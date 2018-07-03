@@ -15,19 +15,16 @@ const page3Data = [
     title:"所见即所得内容制作",
     content: "支持Markdown，教程编写“所见即所得”，书写与阅读体验的极致体验。",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/qggKjIGNFlVmMpwDUXPU.svg',
-    to: '/',
   },
   {
     title: "内嵌代码一键执行",
     content: "只需轻轻一点，教程中的代码块即可一键执行，超酷！",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/dgjVqwkJvptQEtlfctvk.svg',
-    link: '/',
   },
   {
     title: "支持大型GUI计算软件",
     content: "秒级启动完全功能的Matlab等大型GUI计算软件",
     img: 'https://gw.alipayobjects.com/zos/rmsportal/vUxYuDdsbBBcMDxSGmwc.svg',
-    link: '/',
   }
 ];
 
@@ -45,7 +42,6 @@ const svgBg = [
 ];
 const svgChildren = svgBgToParallax(svgBg);
 export default function Page3() {
-  const isZhCN = 'zh-CN';
   const children = page3Data.map((item, i) => {
     const child = [
       <div className="page3-img-wrapper" key="img">
@@ -60,7 +56,7 @@ export default function Page3() {
       <Col key={i.toString()} md={8} xs={24} className="page3-block">
         {
           item.to ? (
-            <a href="/">{child}</a>) : (
+            <a href="/library">{child}</a>) : (
               <a href={item.link} target="_black">
                 {child}
               </a>
@@ -71,21 +67,11 @@ export default function Page3() {
   });
   return (
     <div className="home-page-wrapper page3" id="page3">
-        <div className="banner-bg-wrapper">
-          <svg width="400px" height="576px" viewBox="0 0 400 576" fill="none">
-            <TweenOne component="g" animation={[{ opacity: 0, type: 'from' }, { ...loop, y: 15 }]}>
-              <ellipse id="Oval-9-Copy-4" cx="100" cy="100" rx="6" ry="6" stroke="#2F54EB" strokeWidth="1.6" />
-            </TweenOne>
-            <TweenOne component="g" animation={[{ opacity: 0, type: 'from' }, { ...loop, y: -15 }]}>
-              <g transform="translate(200 450)">
-                <g style={{ transformOrigin: '50% 50%', transform: 'rotate(-340deg)' }}>
-                  <rect stroke="#FADB14" strokeWidth="1.6" width="9" height="9" />
-                </g>
-              </g>
-            </TweenOne>
-          </svg>
-          <ScrollParallax location="banner" className="banner-bg" animation={{ playScale: [1, 1.5], rotate: 0 }} />
-        </div>
+      <div className="parallax-bg mytop">
+        <svg width="1440px" height="557px" viewBox="0 0 1440 557" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+          {svgChildren}
+        </svg>
+      </div>
       <div className="indexPage">
         <h2>我们的优势</h2>
         <ScrollOverPack location="page3">

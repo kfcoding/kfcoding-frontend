@@ -29,7 +29,7 @@ class MyHeader extends React.Component {
       <Header className='header ant-layout-indexHeader' style={this.props.style}>
         {this.props.children}
         <span style={{color: '#fff', fontSize: '24px'}}>
-          <a href="/index" style={{color: '#fff'}}><img src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
+          <a href="/" style={{color: '#fff'}}><img src="//static.cloudwarehub.com/logo-min.png?x-oss-process=style/logo" style={{width: '80px'}}/> 功夫编程</a>
         </span>
         <span style={{float: 'right'}}>
             <Button type='primary' icon='github' size='large' onClick={this.login}>Github登录</Button>

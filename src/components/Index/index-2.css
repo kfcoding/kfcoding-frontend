@@ -8900,11 +8900,11 @@ svg g {
 	pointer-events: none
 }
 
-.parallax-bg.bottom {
+.parallax-bg.mybottom {
 	z-index: 0
 }
 
-.parallax-bg.top {
+.parallax-bg.mytop {
 	margin-top: 220px;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -8961,7 +8961,7 @@ svg g {
 	margin-bottom: 4px
 }
 
-.page3 .parallax-bg.top {
+.page3 .parallax-bg.mytop {
 	margin: 0
 }
 
