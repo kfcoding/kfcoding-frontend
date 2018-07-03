@@ -172,7 +172,7 @@ class CreateWorkspace extends PureComponent {
     };
     createWorkSpace(data).then(res => {
       if (!res.err) {
-        window.open = 'http://workspace.kfcoding.com/' + res.data.result.workspace.id;
+        window.open('http://workspace.kfcoding.com/' + res.data.result.workspace.id);
       }
     })
   }
