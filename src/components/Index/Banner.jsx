@@ -63,8 +63,11 @@ class Banner extends React.PureComponent {
             <p key="p">
              新一代交互式开发者学习社区
             </p>
-            <div className="banner-btns" key="buttons">
+            <div className="banner-btns" key="button1">
               <Button type='primary' icon='github' size='large' onClick={this.login}>立即体验</Button>
+            </div>
+            <div className="banner-btns" key="button2">
+              <Button type='primary' icon='mail' size='large' href="/emailentry/signin">邮箱登录</Button>
             </div>
           </QueueAnim>
           {(

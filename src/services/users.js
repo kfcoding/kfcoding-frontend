@@ -43,3 +43,25 @@ export function UpdateUser(user) {
     });
     
 }
+
+// 邮箱登录
+export function emailSignin(data) {
+  return request(API + '/auth', {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(data)
+  });
+}
+
+// 邮箱注册
+export function emailSignup(data) {
+  return request(API + '/users', {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(data)
+  });
+}
