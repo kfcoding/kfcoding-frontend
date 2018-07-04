@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Icon, Rate, Steps } from 'antd';
+import { Layout, Icon, Rate, Steps, Menu } from 'antd';
 //import CannerEditor from 'kfeditor-slate';
 import { Value } from 'slate';
 import './Editor.css';
@@ -14,6 +14,7 @@ import Kfeditor from '@kfcoding/kfeditor';
 
 const {Content} = Layout;
 const Step = Steps.Step;
+const SubMenu = Menu.SubMenu;
 
 class Reader extends React.Component {
   constructor(props) {
@@ -81,8 +82,12 @@ class Reader extends React.Component {
   }
 
   getPageList = (page) => {
-    if (!page.pages) {
-      page.pages = [];
+    if (page.pages.length===0) {
+      return (
+        <Menu.Item key={page.file} onClick={this.onMenuClick.bind(this, page)}>
+          <span className='title'>{page.title}</span>
+        </Menu.Item>
+      );
     }
     let children = page.pages.map(p => {
       return this.getPageList(p);
@@ -91,9 +96,9 @@ class Reader extends React.Component {
     let style = {
       height: '40px',
       lineHeight: '40px',
-      cursor: 'pointer',
-      padding: '0 20px 0 ' + this._getDepth(page) * 20 + 'px'
+      cursor: 'pointer'
     };
+
     if (this.state.currentPage == page) {
       style.background = '#e6f7ff';
       style.color = '#1890ff';
@@ -101,17 +106,12 @@ class Reader extends React.Component {
     }
 
     return (
-      <div key={page.file}>
-        <div className='menu' style={style} onClick={this.onMenuClick.bind(this, page)}>
-          {page == this.state.editTitlePage ?
-            <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
-                   onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
-            :
-            <span className='title'>{page.title}</span>
-          }
-        </div>
+      <SubMenu 
+        key={page.file}
+        title={<span className='title'>{page.title}</span>}
+      >
         {children}
-      </div>
+      </SubMenu>
     );
   }
 
@@ -166,7 +166,14 @@ class Reader extends React.Component {
     if (!meta) return null;
 
     let rpages = this.state.meta.pages.map(p => {
-      return this.getPageList(p)
+      return (
+        <Menu
+          mode="inline"
+          style={{ height: '100%', borderRight: 0 }}
+        >
+          {this.getPageList(p)}
+        </Menu>
+      );
     })
 
     let cbc = {
