@@ -343,6 +343,12 @@
     "@kfcoding/image-upload" "^0.11.0"
     babel "^6.23.0"
 
+"@types/react@*":
+  version "16.4.6"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
+  dependencies:
+    csstype "^2.2.0"
+
 JSONStream@^1.3.2:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.3.tgz#27b4b8fbbfeab4e71bcf551e7f27be8d952239bf"
@@ -2724,6 +2730,10 @@ cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
   dependencies:
     cssom "0.3.x"
 
+csstype@^2.2.0:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.5.tgz#4125484a3d42189a863943f23b9e4b80fedfa106"
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -3991,6 +4001,10 @@ fs-write-stream-atomic@^1.0.8, fs-write-stream-atomic@~1.0.10:
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
+
+fscreen@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fscreen/-/fscreen-1.0.2.tgz#c4c51d96d819d75a19d728e0df445f9be9bb984f"
 
 fsevents@^1.0.0, fsevents@^1.1.2, fsevents@^1.1.3:
   version "1.2.4"
@@ -7482,7 +7496,7 @@ postcss@^6.0.0, postcss@^6.0.1, postcss@^6.0.13:
     source-map "^0.6.1"
     supports-color "^5.4.0"
 
-preact-compat@^3.16.0:
+preact-compat@^3.16.0, preact-compat@^3.18.0:
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.18.0.tgz#ca430cc1f67193fb9feaf7c510832957b2ebe701"
   dependencies:
@@ -7502,7 +7516,7 @@ preact-transition-group@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/preact-transition-group/-/preact-transition-group-1.1.1.tgz#f0a49327ea515ece34ea2be864c4a7d29e5d6e10"
 
-preact@^8.1.0:
+preact@^8.1.0, preact@^8.2.9:
   version "8.2.9"
   resolved "https://registry.yarnpkg.com/preact/-/preact-8.2.9.tgz#813ba9dd45e5d97c5ea0d6c86d375b3be711cc40"
 
@@ -8218,6 +8232,13 @@ react-app-rewired@^1.5.2:
     cross-spawn "^5.1.0"
     dotenv "^4.0.0"
 
+react-contextmenu@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.9.2.tgz#7076075f09e4cad023a1252da347d9e6782d003a"
+  dependencies:
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
+
 react-dev-utils@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-5.0.1.tgz#1f396e161fe44b595db1b186a40067289bf06613"
@@ -8260,6 +8281,15 @@ react-dom@^16.4.0:
 react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
+
+react-full-screen@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-full-screen/-/react-full-screen-0.2.2.tgz#3939b362cccaa983fb2845ca0c363f29999f485a"
+  dependencies:
+    "@types/react" "*"
+    fscreen "^1.0.1"
+    prop-types "^15.5.10"
+    react "^15.6.1"
 
 react-hovertable@^0.3.0:
   version "0.3.0"
@@ -8459,6 +8489,16 @@ react-style-proptype@^3.0.0:
 react-window-detect-dimensions@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-window-detect-dimensions/-/react-window-detect-dimensions-0.2.0.tgz#ab5bb7f4b6e68813ef1c89598236f0d12cd3df51"
+
+react@^15.6.1:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
+  dependencies:
+    create-react-class "^15.6.0"
+    fbjs "^0.8.9"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.10"
 
 react@^16.4.0:
   version "16.4.0"

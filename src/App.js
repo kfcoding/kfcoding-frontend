@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
-import {
-  Route
-} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import './App.css';
 import Reader from "./components/Reader";
 import KongfuEditor from "./components/Editor";

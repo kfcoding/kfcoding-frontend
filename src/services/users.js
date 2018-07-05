@@ -21,7 +21,7 @@ export function currentUser() {
 }
 
 export function getToken(code) {
-  return request(API + '/auth?authType=github&code=' + code);
+  return request(API + '/auth?authType=github&credenceCode=' + code);
 }
 
 export function getMyKongfu() {

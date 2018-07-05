@@ -18,7 +18,7 @@ import MyHeader from "./Header";
 import MyFooter from "./Footer";
 import {Layout} from "antd/lib/index";
 import './Workspace.css';
-import {createWorkSpace} from "../services/workspace";
+import {createWorkSpace , createContainer} from "../services/workspace";
 
 const {Content} = Layout;
 const FormItem = Form.Item;
@@ -28,13 +28,13 @@ const {TextArea} = Input;
 const templateList = [
   {
     id: '1001',
-    name: 'Python',
-    logo: '/Python.png',
+    name: 'C++',
+    logo: '/C++.png',
   },
   {
     id: '1002',
-    name: 'C++',
-    logo: '/C++.png',
+    name: 'Python',
+    logo: '/Python.png',
   },
   {
     id: '1003',
@@ -138,11 +138,11 @@ class CreateWorkspace extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      template: 'Python',
+      template: 'C++',
       fields: {
         title: {value: ''},
         description: {value: ''},
-        URL: {value: ''},
+        URL: {value: 'https://gitee.com/kfcoding/cpp-starter-kit.git'},
 
       }
     };
@@ -163,18 +163,24 @@ class CreateWorkspace extends PureComponent {
 
   done = () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    let data = {
-      title: this.state.fields.title.value,
-      description: this.state.fields.description.value,
-      environment: this.state.template,
-      gitUrl: this.state.fields.URL.value,
-      userId: user.id
-    };
-    createWorkSpace(data).then(res => {
-      if (!res.err) {
-        window.location.href = 'http://localhost:3000/?id=' + res.data.result.workspace.id;
-      }
+
+    const _this = this;
+    createContainer().then(r => {
+      let data = {
+        title: _this.state.fields.title.value,
+        description: _this.state.fields.description.value,
+        environment: _this.state.template,
+        gitUrl: _this.state.fields.URL.value,
+        userId: user.id,
+        containerName: r.data.name
+      };
+      createWorkSpace(data).then(res => {
+        if (!res.err) {
+          window.location.href = 'http://workspace.kfcoding.com/' + res.data.result.workspace.id;
+        }
+      })
     })
+
   }
 
   render() {
