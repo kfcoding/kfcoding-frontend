@@ -10,3 +10,11 @@ export function createWorkSpace(data) {
     body: JSON.stringify(data)
   });
 }
+
+export function getWorkspaceByUser() {
+  return request(API + '/workspaces', {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  });
+}
