@@ -36,7 +36,7 @@ class Home extends React.Component {
       onOk() {
         deleteKongfu(id).then(res => {
           if (res.data.code == 200) {
-            message.success("删除ç成功");
+            message.success("删除成功");
             // 重新加载
             getMyKongfu().then(res => {
               self.setState({kongfus: res.data.result.kongfuList})

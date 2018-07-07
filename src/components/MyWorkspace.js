@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import {Link} from 'react-router-dom';
 import MyHeader from "./Header";
 import MyFooter from "./Footer";
-import {getWorkspaceByUser, createWorkSpace} from "../services/workspace";
+import {getWorkspaceByUser, createWorkSpace,deleteWorkspace} from "../services/workspace";
 
 const {Content, Sider} = Layout;
 const ButtonGroup = Button.Group;
@@ -22,7 +22,6 @@ class MyWorkspace extends React.Component {
     deleteVisible: false,
   }
 
-
   showDeleteConfirm(id) {
     console.log(this.state);
     const self = this;
@@ -33,9 +32,9 @@ class MyWorkspace extends React.Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        deleteKongfu(id).then(res => {
+        deleteWorkspace(id).then(res => {
           if (res.data.code == 200) {
-            message.success("删除ç成功");
+            message.success("删除成功");
             // 重新加载
             getWorkspaceByUser().then(res => {
               self.setState({workspaces: res.data.result.workspaces})
@@ -93,18 +92,20 @@ class MyWorkspace extends React.Component {
 
     let workspaces = this.state.workspaces.map((kf) => {
       let edithref = '/editor/' + kf.id;
-      let deletehref = '/kongfu/delete/' + kf.id;
+      let deletehref = '/workspaces' + kf.id;
       return (
-          <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}} onClick={() => {this.OpenClick(kf.id)}}>
+          <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
             <Card
               hoverable
               style={{ width: 240 , height: 165}}
-              actions={[<Link to="/home"><Icon type="edit" /></Link>, <Icon type="delete" />]}
+              actions={[<Link to="/home"><Icon type="edit" /></Link>,<Icon type="delete" onClick={() => this.showDeleteConfirm(kf.id)}/>]}
             >
               <Meta
                 avatar={<Avatar icon="folder" />}
                 title={kf.title}
                 description={kf.gitUrl}
+                onClick={() => {this.OpenClick(kf.id)}}
+                style={{marginRight:0}}
               />
             </Card>
           </div>
@@ -131,7 +132,7 @@ class MyWorkspace extends React.Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item key="2">
-                    <Link to="/myworkspace">
+                    <Link to="/myWorkspace">
                       我创建的Workspace
                     </Link>
                    </Menu.Item>
