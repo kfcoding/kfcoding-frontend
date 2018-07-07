@@ -1,10 +1,7 @@
 import React from 'react';
-import styles from './Library.css';
 import {message, Modal, Layout, Divider, Button, Menu, Icon , Card , Avatar} from 'antd';
+import { Row, Col } from 'antd';
 import {Link} from 'react-router-dom';
-import Book from "../components/Book";
-import {getMyKongfu} from "../services/users";
-import {createKongfu, deleteKongfu} from "../services/kongfu";
 import MyHeader from "./Header";
 import MyFooter from "./Footer";
 import {getWorkspaceByUser, createWorkSpace} from "../services/workspace";
@@ -87,33 +84,30 @@ class MyWorkspace extends React.Component {
     }).bind(this)
   }
 
-  saveFormRef = (formRef) => {
-    this.formRef = formRef;
+  OpenClick = (id) => {
+    window.location.href = 'http://workspace.kfcoding.com/' + id;
   }
 
   render() {
     const {visible, loading} = this.state;
 
     let workspaces = this.state.workspaces.map((kf) => {
-      let viewhref = '/reader/' + kf.id;
       let edithref = '/editor/' + kf.id;
-      let settinghref = '/kongfu/' + kf.id + '/settings';
       let deletehref = '/kongfu/delete/' + kf.id;
       return (
-        <Link to='/workspace/create'>
-          <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
+          <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}} onClick={() => {this.OpenClick(kf.id)}}>
             <Card
-              style={{ width: 240 }}
+              hoverable
+              style={{ width: 240 , height: 165}}
               actions={[<Link to="/home"><Icon type="edit" /></Link>, <Icon type="delete" />]}
             >
               <Meta
                 avatar={<Avatar icon="folder" />}
-                title="Workspace名称"
-                description="git地址"
+                title={kf.title}
+                description={kf.gitUrl}
               />
             </Card>
           </div>
-        </Link>
       )
     })
 
@@ -126,7 +120,7 @@ class MyWorkspace extends React.Component {
             <Sider width={200} style={{background: '#fff'}}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={['2']}
                 defaultOpenKeys={['sub1']}
                 style={{height: '100%'}}
               >
@@ -153,14 +147,19 @@ class MyWorkspace extends React.Component {
                 <Link to='/workspace/create'>
                   <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
                     <Card
-                      style={{ width: 240 }}
-                      actions={[<Link to="/home"><Icon type="edit" /></Link>, <Icon type="delete" />]}
+                      hoverable
+                      style={{ width: 240 , height: 165 , backgroundColor:'#CCCCCC'}}
                     >
-                      <Meta
-                        avatar={<Avatar icon="folder" />}
-                        title="Workspace名称"
-                        description="git地址"
-                      />
+                      <Row type="flex" justify="space-around" align="middle" style={{marginTop:25}}>
+                        <Col span={13} style={{fontWeight:'bold',color:'#FFFFFF'}}>
+                            创建Workspace
+                        </Col>
+                      </Row>
+                      <Row type="flex" justify="space-around" align="middle" style={{marginTop:8}}>
+                        <Col span={5}>
+                            <Button type="Default" shape="circle" icon="plus" size='large' style={{backgroundColor:'#CCCCCC',}} ></Button>
+                        </Col>
+                      </Row>
                     </Card>
                   </div>
                 </Link>

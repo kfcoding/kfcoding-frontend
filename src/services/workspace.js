@@ -12,11 +12,7 @@ export function createWorkSpace(data) {
 }
 
 export function getWorkspaceByUser() {
-  return request(API + '/workspaces', {
-    headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    }
-  });
+  return request(API + '/workspaces');
 }
 
 export function createContainer() {
