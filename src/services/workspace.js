@@ -11,13 +11,14 @@ export function createWorkSpace(data) {
   });
 }
 
-export function createContainer() {
+export function createContainer(imageName) {
   return request("http://aliapi.workspace.cloudwarehub.com/workspace",
     {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'POST',
+      body: JSON.stringify({image:imageName})
     }
   )
 };
