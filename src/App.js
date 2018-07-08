@@ -15,6 +15,8 @@ import UserProfile from "./components/UserProfile";
 import Index from './components/Index/index';
 import UserSetting from './components/UserSetting';
 import CreateWorkspace from "./components/CreateWorkspace";
+import EmailSignup from "./components/EmailEntry/signup"
+import EmailSignin from "./components/EmailEntry/signin"
 // import Test from "./components/Test";
 
 class App extends Component {
@@ -27,6 +29,8 @@ class App extends Component {
       <div style={{height: '100%'}}>
         <Switch>
           <Route path='/' exact component={Index}/>
+          <Route path='/emailentry/signup' exact component={EmailSignup}/>
+          <Route path='/emailentry/signin' exact component={EmailSignin}/>
           <Route exact path='/signin' component={Signin}/>
           <Route exact path='/editor/:kongfu_id' component={props => <KongfuEditor {...props}/>}/>
           <Route path='/reader/:kongfu_id' component={props => <Reader {...props}/>}/>
