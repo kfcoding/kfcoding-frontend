@@ -28,21 +28,25 @@ const templateList = [
   {
     id: '1001',
     name: 'C++',
+    image:'daocloud.io/shaoling/workspace-env-cpp:master',
     logo: '/C++.png',
   },
   {
     id: '1002',
     name: 'Python',
+    image:'kfcoding/workspace-python',
     logo: '/Python.png',
   },
   {
     id: '1003',
     name: 'NodeJs',
+    image:'kfcoding/workspace-node',
     logo: '/NodeJs.png',
   },
   {
     id: '1004',
     name: 'HTML5',
+    image:'kfcoding/workspace-html5',
     logo: '/HTML5.png',
   },
 ];
@@ -137,7 +141,7 @@ class CreateWorkspace extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      template: 'C++',
+      template: templateList[0].image,
       fields: {
         title: {value: ''},
         description: {value: ''},
@@ -146,10 +150,10 @@ class CreateWorkspace extends PureComponent {
       }
     };
   };
-  handleButtonClick = (name) => {
-    console.log(name);
+  handleButtonClick = (image) => {
+    console.log(image);
     this.setState({
-      template:name
+      template:image
     });
 
   }
@@ -164,7 +168,8 @@ class CreateWorkspace extends PureComponent {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const _this = this;
-    createContainer().then(r => {
+
+    createContainer(_this.state.template).then(r => {
       let data = {
         title: _this.state.fields.title.value,
         description: _this.state.fields.description.value,
@@ -183,6 +188,8 @@ class CreateWorkspace extends PureComponent {
   }
 
   render() {
+    const valid = this.state.fields.title.value && this.state.fields.description.value ? true : false;
+
     return (
       <Layout>
         <MyHeader/>
@@ -195,9 +202,9 @@ class CreateWorkspace extends PureComponent {
                 <FormItem {...formItemLayout} label="模板">
                   <div style={{width: '400px'}}>
                     {templateList.map(item => (
-                      <div className={this.state.template === item.name ? 'cardInfo' : 'card'}>
+                      <div className={this.state.template === item.image ? 'cardInfo' : 'card'}>
                         <div className='cardItem' onClick={() => {
-                          this.handleButtonClick(item.name)
+                          this.handleButtonClick(item.image)
                         }}>
                           <button className='cardButton' style={{backgroundImage: "url(" + item.logo + ")"}}/>
                           <h6 style={{textAlign: 'center', marginTop: '-20px'}}>{item.name}</h6>
@@ -207,7 +214,7 @@ class CreateWorkspace extends PureComponent {
                   </div>
                 </FormItem>
                 <FormItem {...submitFormLayout} style={{marginTop: 32}}>
-                  <Button type="primary" htmlType="submit" onClick={this.done}>
+                  <Button type="primary" disabled={!valid} htmlType="submit" onClick={this.done}>
                     提交
                   </Button>
                 </FormItem>
