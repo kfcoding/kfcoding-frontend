@@ -1,45 +1,43 @@
 import React from 'react';
-import styles from './Library.css';
-import {message, Modal, Layout, Divider, Button, Menu, Icon} from 'antd';
+import {message, Modal, Layout, Divider, Button, Menu, Icon , Card , Avatar} from 'antd';
+import { Row, Col } from 'antd';
 import {Link} from 'react-router-dom';
-import Book from "../components/Book";
-import {getMyKongfu} from "../services/users";
-import {createKongfu, deleteKongfu} from "../services/kongfu";
 import MyHeader from "./Header";
 import MyFooter from "./Footer";
+import {getWorkspaceByUser, createWorkSpace,deleteWorkspace} from "../services/workspace";
 
 const {Content, Sider} = Layout;
 const ButtonGroup = Button.Group;
 const {SubMenu} = Menu;
 const confirm = Modal.confirm;
+const { Meta } = Card;
 
-class Home extends React.Component {
+class MyWorkspace extends React.Component {
 
   state = {
     loading: false,
     visible: false,
-    kongfus: [],
+    workspaces: [],
     isRefresh: false,
     deleteVisible: false,
   }
-
 
   showDeleteConfirm(id) {
     console.log(this.state);
     const self = this;
     confirm({
-      title: '确定删除该功夫？',
+      title: '确定删除该工作空间？',
       content: '',
       okText: '确定',
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        deleteKongfu(id).then(res => {
+        deleteWorkspace(id).then(res => {
           if (res.data.code == 200) {
             message.success("删除成功");
             // 重新加载
-            getMyKongfu().then(res => {
-              self.setState({kongfus: res.data.result.kongfuList})
+            getWorkspaceByUser().then(res => {
+              self.setState({workspaces: res.data.result.workspaces})
             })
           }
         })
@@ -51,8 +49,8 @@ class Home extends React.Component {
   }
 
   componentWillMount() {
-    getMyKongfu().then(res => {
-      this.setState({kongfus: res.data.result.kongfuList})
+    getWorkspaceByUser().then(res => {
+      this.setState({workspaces: res.data.result.workspaces})
     })
   }
 
@@ -76,43 +74,41 @@ class Home extends React.Component {
       values['author'] = user.name;
       values['userId'] = user.id
       console.log('Received values of form: ', values);
-      createKongfu(values).then(res => {
-        getMyKongfu().then(res => {
-          this.setState({kongfus: res.data.result.kongfuList})
+      createWorkSpace(values).then(res => {
+        getWorkspaceByUser().then(res => {
+          this.setState({workspaces: res.data.result.workspaces})
           this.setState({visible: false})
         })
       })
     }).bind(this)
   }
 
-  saveFormRef = (formRef) => {
-    this.formRef = formRef;
+  OpenClick = (id) => {
+    window.location.href = 'http://workspace.kfcoding.com/' + id;
   }
 
   render() {
     const {visible, loading} = this.state;
 
-    let kongfus = this.state.kongfus.map((kf) => {
-      let viewhref = '/reader/' + kf.id;
+    let workspaces = this.state.workspaces.map((kf) => {
       let edithref = '/editor/' + kf.id;
-      let settinghref = '/kongfu/' + kf.id + '/settings';
-      let deletehref = '/kongfu/delete/' + kf.id;
+      let deletehref = '/workspaces' + kf.id;
       return (
-        <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
-          <a href='#' style={{display: 'block', width: '240px', height: '320px', marginLeft: '40px'}}>
-            <Book key={kf.id} book={kf}/>
-          </a>
-          <div style={{paddingTop: '30px', textAlign: 'center'}}>
-            <ButtonGroup>
-              <Button type="primary" icon="eye" href={viewhref}>阅读</Button>
-              <Button type="primary" icon="edit" href={edithref}>编辑</Button>
-              <Button type="primary" icon="setting" href={settinghref}>设置</Button>
-              <Button onClick={() => this.showDeleteConfirm(kf.id)} type="primary" icon="delete">
-                删除
-              </Button>
-            </ButtonGroup>
+          <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
+            <Card
+              hoverable
+              style={{ width: 240 , height: 165}}
+              actions={[<Link to="/home"><Icon type="edit" /></Link>,<Icon type="delete" onClick={() => this.showDeleteConfirm(kf.id)}/>]}
+            >
+              <Meta
+                avatar={<Avatar icon="folder" />}
+                title={kf.title}
+                description={kf.gitUrl}
+                onClick={() => {this.OpenClick(kf.id)}}
+                style={{marginRight:0}}
+              />
+            </Card>
           </div>
-        </div>
       )
     })
 
@@ -125,7 +121,7 @@ class Home extends React.Component {
             <Sider width={200} style={{background: '#fff'}}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={['2']}
                 defaultOpenKeys={['sub1']}
                 style={{height: '100%'}}
               >
@@ -136,10 +132,10 @@ class Home extends React.Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item key="2">
-                    <Link to="/myworkspace">
+                    <Link to="/myWorkspace">
                       我创建的Workspace
                     </Link>
-                  </Menu.Item>
+                   </Menu.Item>
                   {/*<Menu.Item key="2">我收藏的秘籍</Menu.Item>*/}
                 </SubMenu>
 
@@ -147,27 +143,25 @@ class Home extends React.Component {
             </Sider>
             <Content>
               <div style={{background: '#fff', padding: 24, minHeight: 280, overflow: 'auto'}}>
-                <Divider orientation="left" style={{fontSize: '28px'}}>藏经阁</Divider>
-                {kongfus}
-                <Link to='/kongfu/create'>
-                  <div className='container'>
-                    <div className='book'>
-                      <div className='front'>
-                        <div className='addCover' style={{backgroundColor: '#525485'}}>
-                          <h2>
-                            <span>{username}</span>
-                            <span>添加秘籍</span>
-                          </h2>
-                        </div>
-                      </div>
-
-                      <div className='left' style={{backgroundColor: '#525485'}}>
-                        <h2>
-                          <span>作者</span>
-                          <span>名称</span>
-                        </h2>
-                      </div>
-                    </div>
+                <Divider orientation="left" style={{fontSize: '28px'}}>Workspace</Divider>
+                {workspaces}
+                <Link to='/workspace/create'>
+                  <div style={{float: 'left', marginRight: '40px', marginBottom: '40px'}}>
+                    <Card
+                      hoverable
+                      style={{ width: 240 , height: 165 , backgroundColor:'#CCCCCC'}}
+                    >
+                      <Row type="flex" justify="space-around" align="middle" style={{marginTop:25}}>
+                        <Col span={13} style={{fontWeight:'bold',color:'#FFFFFF'}}>
+                            创建Workspace
+                        </Col>
+                      </Row>
+                      <Row type="flex" justify="space-around" align="middle" style={{marginTop:8}}>
+                        <Col span={5}>
+                            <Button type="Default" shape="circle" icon="plus" size='large' style={{backgroundColor:'#CCCCCC',}} ></Button>
+                        </Col>
+                      </Row>
+                    </Card>
                   </div>
                 </Link>
               </div>
@@ -180,4 +174,4 @@ class Home extends React.Component {
   }
 }
 
-export default (Home);
+export default (MyWorkspace);

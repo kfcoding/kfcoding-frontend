@@ -11,6 +11,19 @@ export function createWorkSpace(data) {
   });
 }
 
+export function getWorkspaceByUser() {
+  return request(API + '/workspaces');
+}
+
+export function deleteWorkspace(id) {
+  return request(API + '/workspaces/'+id, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'DELETE',
+  });
+}
+
 export function createContainer(imageName) {
   return request("http://aliapi.workspace.cloudwarehub.com/workspace",
     {

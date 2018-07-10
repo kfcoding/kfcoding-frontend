@@ -13,7 +13,6 @@ import {
   Tooltip,
   Divider,
 } from 'antd';
-import styles from './CreateWorkspace.less';
 import MyHeader from "./Header";
 import MyFooter from "./Footer";
 import {Layout} from "antd/lib/index";

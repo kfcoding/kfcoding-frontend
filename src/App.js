@@ -7,6 +7,7 @@ import KongfuEditor from "./components/Editor";
 import Signin from "./components/Signin";
 import Callback from "./components/Callback";
 import Home from "./components/Home";
+import Myworkspace from "./components/MyWorkspace";
 import Library from "./components/Library/index";
 import CreateKongfu from "./components/CreateKongfu";
 import KongfuSettings from "./components/Kongfu/KongfuSettings";
@@ -36,6 +37,7 @@ class App extends Component {
           <Route path='/reader/:kongfu_id' component={props => <Reader {...props}/>}/>
           <Route path='/auth/callback' component={Callback}/>
           <Route path='/home' component={Home}/>
+          <Route path='/myWorkspace' component={Myworkspace}/>
           <Route path='/library' component={Library}/>
           <Route path='/kongfu/create' exact component={CreateKongfu}/>
           <Route path='/kongfu/:kongfu_id' exact component={props => <Kongfu {...props}/>}/>

@@ -82,12 +82,8 @@ class Reader extends React.Component {
   }
 
   getPageList = (page) => {
-    if (page.pages.length===0) {
-      return (
-        <Menu.Item key={page.file} onClick={this.onMenuClick.bind(this, page)}>
-          <span className='title'>{page.title}</span>
-        </Menu.Item>
-      );
+    if (!page.pages) {
+      page.pages = [];
     }
     let children = page.pages.map(p => {
       return this.getPageList(p);
@@ -96,9 +92,9 @@ class Reader extends React.Component {
     let style = {
       height: '40px',
       lineHeight: '40px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      padding: '0 20px 0 ' + this._getDepth(page) * 20 + 'px'
     };
-
     if (this.state.currentPage == page) {
       style.background = '#e6f7ff';
       style.color = '#1890ff';
@@ -106,12 +102,17 @@ class Reader extends React.Component {
     }
 
     return (
-      <SubMenu 
-        key={page.file}
-        title={<span className='title'>{page.title}</span>}
-      >
+      <div key={page.file}>
+        <div className='menu' style={style} onClick={this.onMenuClick.bind(this, page)}>
+          {page == this.state.editTitlePage ?
+            <input autoFocus type='text' value={page.title} onKeyDown={this.saveTitle}
+                   onChange={this.changeTitle.bind(this, page)} style={{border: '0', height: '30px'}}/>
+            :
+            <span className='title'>{page.title}</span>
+          }
+        </div>
         {children}
-      </SubMenu>
+      </div>
     );
   }
 
